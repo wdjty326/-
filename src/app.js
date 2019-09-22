@@ -1,5 +1,5 @@
 /** 상수 */
-const DefineConst = require("./Defines/Const");
+const DefineConst = require("./define/const");
 
 const base = require("./base");
 
