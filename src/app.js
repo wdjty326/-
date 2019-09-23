@@ -41,7 +41,7 @@ module.exports.Discord = class DiscordApp {
 			const exec = params[0];
 			const args = params.splice(1);
 			console.log(exec, args);
-
+			console.log(message);
 			if (exec in base)
 				base[exec].call(this, message, args);
 			else
