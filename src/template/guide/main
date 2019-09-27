@@ -1,6 +1,12 @@
-# HELP 명령어 사용을 위한 가이드 문서입니다.
 
-/Templates/Guides/Main 파일을 fs로 읽어와서 처리
-추후에는 파라미터로 상세 가이드 라인 작성 예정
+# HELP
 
+ping
+- 봇과 서버간의 ping을 알려줍니다. [DEBUG용]
+connect
+- 호출한 유저가 있는 방으로 택유를 호출합니다.
+disconnect
+- 택유가 방을 탈출합니다.
+play [youtube]
+- 유튜브링크를 재생합니다.
 git link : https://github.com/wdjty326/discordbot-me

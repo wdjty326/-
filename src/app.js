@@ -10,7 +10,10 @@ module.exports.Discord = class DiscordApp {
 	constructor(token) {
 		/** 연결할 디스코드 클라이언트 입니다. */
 		this.client = new discordjs.Client();
+		this.connect = null;
 		
+		this.PlayerArrayQueue = [];
+
 		this.ready = this.ready.bind(this);
 		this.message = this.message.bind(this);
 
@@ -41,19 +44,10 @@ module.exports.Discord = class DiscordApp {
 			const exec = params[0];
 			const args = params.splice(1);
 			console.log(exec, args);
-			console.log(message);
 			if (exec in base)
 				base[exec].call(this, message, args);
 			else
 				message.reply("[DEBUG]불러오지못한명령어");
-			// switch(exec) {
-			// 	case "ping":
-			// 		message.reply(`[DEBUG]응답속도 : ${this.client.ping}(ms)`);
-			// 		break;
-			// 	default:
-			// 		console.log(message);
-			// 		message.reply("뭐라는거임?");
-			// }
 		}
 	}
 }
