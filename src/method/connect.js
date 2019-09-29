@@ -1,5 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+var ytdl_core_1 = __importDefault(require("ytdl-core"));
 /** 봇이 음성방에서 퇴장합니다. */
 function default_1(message, args) {
     var _this = this;
@@ -10,7 +14,15 @@ function default_1(message, args) {
         if (!this.connect) {
             voiceChannel
                 .join()
-                .then(function (connect) { return _this.connect = connect; })
+                .then(function (connect) {
+                _this.connect = connect;
+                var stream = ytdl_core_1.default("https://www.youtube.com/watch?v=SCVSWangq-o", { filter: 'audioonly' });
+                _this.connect.playStream(stream, {
+                    seek: 0,
+                    volume: 1
+                });
+                console.log("연결됨", _this.connect.channel.id, _this.connect.status);
+            })
                 .catch(function (err) { return message.reply(err.toString()); });
         }
         else {
