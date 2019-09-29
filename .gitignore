@@ -5,3 +5,5 @@ node_modules
 # 본인의 client token을 넣어주세요
 client_token
 client_url
+
+src/**/*.js

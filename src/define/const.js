@@ -1,2 +1,4 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 /** 커맨드의 시작라인입니다. */
-module.exports.cmd = "!=";
+exports.COMMAND_LINE = "!=";

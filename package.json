@@ -2,7 +2,7 @@
   "name": "bot",
   "version": "1.0.0",
   "scripts": {
-    "start": "babel index.js | node",
+    "start": "tsc | babel index.js | node",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -13,8 +13,10 @@
     "@babel/preset-env": "^7.6.0"
   },
   "dependencies": {
+    "@types/node": "^12.7.8",
     "discord.js": "^11.5.1",
     "node-opus": "^0.3.2",
+    "typescript": "^3.6.3",
     "ytdl-core": "^0.29.7"
   },
   "description": ""
