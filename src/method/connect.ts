@@ -1,8 +1,6 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import ytdl from "ytdl-core";
-
 /** 봇이 음성방에서 퇴장합니다. */
 export default function(this: discordapp, message: discordjs.Message, args?: string[]) {
 	const { voiceChannel } = message.member;
@@ -15,7 +13,15 @@ export default function(this: discordapp, message: discordjs.Message, args?: str
 			voiceChannel
 			.join()
 			.then((connection) => {
-				this.connectionMapper.set(serverId, connection)
+				// const { dispatcher } = connection;
+				// dispatcher.on("end", () => {
+				// 	console.log("dispatcher end");
+				// });
+				this.connectionMapper.set(serverId, {
+					connection,
+					dispatcher: connection.dispatcher,
+					arrayQueueStack: [],
+				});
 			})
 			.catch((err) => message.reply(err.toString()));		
 		} else {

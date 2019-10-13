@@ -3,6 +3,7 @@ import help from "./help";
 import connect from "./connect";
 import disconnect from "./disconnect";
 import play from "./play";
+import pause from "./pause";
 
 const method: {
 	[key: string]: Function;

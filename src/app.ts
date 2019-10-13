@@ -1,6 +1,8 @@
 import discordjs from "discord.js";
 import method from "./method";
 
+import { DiscordVoiceMapper } from "./define/DiscordInterface";
+
 /** 커맨드의 시작라인입니다. */
 const CommandLine = "!=";
 
@@ -10,7 +12,7 @@ export default class DiscordApp {
 	protected client: discordjs.Client = new discordjs.Client();
 
 	/** 음성 연결방 클라이언트 */
-	protected connectionMapper: Map<string, discordjs.VoiceConnection> = new Map();
+	protected connectionMapper: Map<string, DiscordVoiceMapper> = new Map();
 
 	constructor(token: string) {	
 		this.ready = this.ready.bind(this);

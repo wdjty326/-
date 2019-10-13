@@ -1,11 +1,12 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
+import { DiscordVoiceMapper } from "../define/DiscordInterface";
 
 import ytdl from "ytdl-core";
 import path from "path";
 import fs from "fs";
 
-import ffmpeg from "ffmpeg";
+import ffmpeg from "fluent-ffmpeg";
 
 import { getURLParameter } from "../lib/StringLib";
 import { Readable } from "stream";
@@ -21,7 +22,8 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 
 	// 봇 음성방 진입 여부
 	if (this.connectionMapper.has(serverId)) {
-		const connection = this.connectionMapper.get(serverId) as discordjs.VoiceConnection;
+		const mapper = this.connectionMapper.get(serverId) as DiscordVoiceMapper;
+		const { connection } = mapper;
 		// 파라미터 검증
 		if (!args[0]) {
 			message.reply("노래는 알려줘야 부를꺼아니냐");
@@ -48,36 +50,60 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 			message.reply("링크 제대로 준거 맞아?");
 			return;	
 		}
-		const dirPath = path.resolve(__dirname, "..", "music", serverId);
-		const filePath = path.resolve(dirPath, `${parameters["v"]}.mp4`);
 
-		if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath, {
-			recursive: true
+		const dirPaths = ["..", "music", serverId];
+		let dirPath = path.resolve(__dirname);		
+		dirPaths.forEach((dir) => {
+			dirPath = path.resolve(dirPath, dir);
+			if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
 		});
 
-		// `${parameters["v"]}.mp3`
-		console.log(link);
+		const filePath = path.resolve(dirPath, `${parameters["v"]}.mp3`);
 		new Promise<Readable>((resolve, reject) => {
-			console.log("Promise");
-			if (fs.existsSync(filePath))
+			if (fs.existsSync(filePath)) {
 				resolve(fs.createReadStream(filePath));
-			else
+			}	else {
 				try {
-					const buffer = fs.createWriteStream(filePath);
-					const stream = ytdl(link).pipe(buffer);
-					stream.end(() => {
-						new ffmpeg(filePath).then((video) => {
-							
-						});
+					// ffmpeg 를 사용하여 mp4 를 mp3 코텍으로 변경합니다.
+					ffmpeg({
+						source: ytdl(link, {
+							filter: (format) => format.container === "mp4"
+						}),
+						timeout: 10
+					})
+					.withNoVideo()
+					.withAudioBitrate(128)
+					.withAudioChannels(2)
+					.withAudioFrequency(48000)
+					.withAudioQuality(5)
+					.fromFormat("mp4")
+					.outputFormat("mp3")
+					.on("error", (err) => {
+						if (typeof err === "string")	new Error(err);
+						else	reject(err);
+					})
+					.on("end", () => {
 						resolve(fs.createReadStream(filePath));
-					});
-				} catch (e) {
-					message.reply(`[ERROR]${e}`);
-					console.log(e);
+					})
+					.pipe(fs.createWriteStream(filePath));
+				} catch (err) {
+					if (typeof err === "string")	reject(new Error(err));
+					else	reject(err);
 				}
-
+			}
 		}).then((stream) => {
-			connection.playStream(stream, StreamOption);
+			if (mapper.dispatcher && !mapper.dispatcher.destroyed) {
+				mapper.arrayQueueStack.push(filePath);
+			} else {
+				const dispatcher = connection.playStream(stream, StreamOption);
+				dispatcher.on("end", () => {
+					if (mapper.arrayQueueStack.length > 0)
+						mapper.dispatcher = connection.playStream(fs.createReadStream(filePath), StreamOption);
+				});
+				mapper.dispatcher = connection.playStream(stream, StreamOption);
+			}
+		}).catch((err: Error) => {
+			message.reply(`[ERROR]${err.message}`);	
 		});
 	} else {
 		message.reply("음성방 들어가면 불러줄게");
