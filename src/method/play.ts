@@ -1,6 +1,7 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 import { DiscordVoiceMapper } from "../define/DiscordInterface";
+import { getMapper, getDispatcher, PlayStream } from "../lib/VoiceLib";
 
 import ytdl from "ytdl-core";
 import path from "path";
@@ -11,19 +12,13 @@ import ffmpeg from "fluent-ffmpeg";
 import { getURLParameter } from "../lib/StringLib";
 import { Readable } from "stream";
 
-const StreamOption = {
-	seek: 0,
-	volume: 1
-};
-
 export default function(this: discordapp, message: discordjs.Message, args: string[]) {
 	// 호출 메세지의 서버 ID
 	const serverId = message.guild.id;
+	const mapper = getMapper.call(this, serverId);
 
 	// 봇 음성방 진입 여부
-	if (this.connectionMapper.has(serverId)) {
-		const mapper = this.connectionMapper.get(serverId) as DiscordVoiceMapper;
-		const { connection } = mapper;
+	if (mapper) {
 		// 파라미터 검증
 		if (!args[0]) {
 			message.reply("노래는 알려줘야 부를꺼아니냐");
@@ -65,21 +60,9 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 			}	else {
 				try {
 					// ffmpeg 를 사용하여 mp4 를 mp3 코텍으로 변경합니다.
-					ffmpeg({
-						source: ytdl(link, {
-							filter: (format) => format.container === "mp4"
-						}),
-						timeout: 10
-					})
-					.withNoVideo()
-					.withAudioBitrate(128)
-					.withAudioChannels(2)
-					.withAudioFrequency(48000)
-					.withAudioQuality(5)
-					.fromFormat("mp4")
-					.outputFormat("mp3")
+					FfmpegAudio(link)
 					.on("error", (err) => {
-						if (typeof err === "string")	new Error(err);
+						if (typeof err === "string")	reject(new Error(err));
 						else	reject(err);
 					})
 					.on("end", () => {
@@ -92,15 +75,12 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 				}
 			}
 		}).then((stream) => {
-			if (mapper.dispatcher && !mapper.dispatcher.destroyed) {
+			const dispatcher = getDispatcher(mapper);
+
+			if (dispatcher && !dispatcher.destroyed) {
 				mapper.arrayQueueStack.push(filePath);
 			} else {
-				const dispatcher = connection.playStream(stream, StreamOption);
-				dispatcher.on("end", () => {
-					if (mapper.arrayQueueStack.length > 0)
-						mapper.dispatcher = connection.playStream(fs.createReadStream(filePath), StreamOption);
-				});
-				mapper.dispatcher = connection.playStream(stream, StreamOption);
+				PlayStream(mapper, stream);
 			}
 		}).catch((err: Error) => {
 			message.reply(`[ERROR]${err.message}`);	
@@ -109,3 +89,18 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 		message.reply("음성방 들어가면 불러줄게");
 	}
 }
+
+// ffmpeg 오디오 처리 함수
+const FfmpegAudio = (link: string) => ffmpeg({
+		source: ytdl(link, {
+			filter: (format) => format.container === "mp4"
+		}),
+		timeout: 10
+	})
+	.withNoVideo()
+	.withAudioBitrate(96)
+	.withAudioChannels(2)
+	.withAudioFrequency(48000)
+	.withAudioQuality(5)
+	.fromFormat("mp4")
+	.outputFormat("mp3");

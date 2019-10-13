@@ -19,7 +19,6 @@ export default function(this: discordapp, message: discordjs.Message, args?: str
 				// });
 				this.connectionMapper.set(serverId, {
 					connection,
-					dispatcher: connection.dispatcher,
 					arrayQueueStack: [],
 				});
 			})

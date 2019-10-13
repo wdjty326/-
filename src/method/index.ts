@@ -4,6 +4,8 @@ import connect from "./connect";
 import disconnect from "./disconnect";
 import play from "./play";
 import pause from "./pause";
+import resume from "./resume";
+import skip from "./skip";
 
 const method: {
 	[key: string]: Function;
@@ -13,6 +15,9 @@ const method: {
 	connect,
 	disconnect,
 	play,
+	pause,
+	resume,
+	skip
 };
 
 export default method;

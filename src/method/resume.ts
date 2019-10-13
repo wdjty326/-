@@ -12,7 +12,8 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 	// 봇 음성방 진입 여부
 	if (mapper) {
 		const dispatcher = getDispatcher(mapper);
-		// 일시정지 처리
-		if (dispatcher)	dispatcher.pause();
+
+		// 다시시작 처리
+		if (dispatcher)	dispatcher.resume();
 	}
 }
