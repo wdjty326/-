@@ -92,8 +92,9 @@ const FileWriteStream = (link: string, filePath: string) => new Promise<Readable
 		resolve(fs.createReadStream(filePath));
 	}	else {
 		try {
+			const stream = ytdl(link, {	filter: "audio" });
 			// ffmpeg 를 사용하여 mp4 를 mp3 코텍으로 변경합니다.
-			FfmpegAudio(link)
+			FfmpegAudio(stream)
 			.on("error", (err) => {
 				if (typeof err === "string")	reject(new Error(err));
 				else	reject(err);
@@ -110,18 +111,24 @@ const FileWriteStream = (link: string, filePath: string) => new Promise<Readable
 });
 
 // ffmpeg 오디오 처리 함수
-const FfmpegAudio = (link: string) => ffmpeg({
-		source: ytdl(link, {
-			filter: (format) => format.container === "mp4"
-		}),
-		timeout: 10
-	})
+const FfmpegAudio = (stream: Readable) => ffmpeg()
+    .input(stream)
+    .audioFilters([
+    {
+      filter: 'volume',
+      options: '0.5'
+    },
+    {
+      filter: 'silencedetect',
+      options: 'n=-50dB:d=5'
+    }
+  ])
+	.audioCodec("libmp3lame")
 	.withNoVideo()
-	.withAudioBitrate(96)
+	.withAudioBitrate("96k")
 	.withAudioChannels(2)
 	.withAudioFrequency(48000)
 	.withAudioQuality(5)
-	.fromFormat("mp4")
 	.outputFormat("mp3");
 
 	
