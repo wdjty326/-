@@ -10,3 +10,6 @@ dist
 client_token
 client_url
 
+# 구글 api 연동 키셋이다
+api_key
+test

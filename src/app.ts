@@ -14,9 +14,13 @@ export default class DiscordApp {
 	/** 음성 연결방 클라이언트 */
 	protected connectionMapper: Map<string, DiscordVoiceMapper> = new Map();
 
-	constructor(token: string) {	
+	/** google api key 정보 */
+	protected apikey: string = "";
+
+	constructor(token: string, apikey: string) {	
 		this.ready = this.ready.bind(this);
 		this.message = this.message.bind(this);
+		this.apikey = apikey;
 
 		this.client.on("ready", this.ready);
 		this.client.on("message", this.message);
