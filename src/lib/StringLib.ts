@@ -16,3 +16,17 @@ export const getURLParameter = (url: string) => {
 
 	return parameters;
 }
+
+export const SerializeGet = (obj: { [key: string]: string | number | boolean | undefined | null }): string  => Object.keys(obj)
+	.filter((key) => obj[key] !== undefined)
+	.map((key) => {
+		const value = obj[key];
+		if (value === null)
+			return `${key}=`;
+		else if (typeof value === "number")
+			return `${key}=${value.toString()}`;
+		else if (typeof value === "boolean")
+			return `${key}=${value ? "true" : "false"}`;
+		else // string or ...
+			return `${key}=${value}`;
+	}).join("&");
