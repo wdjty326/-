@@ -1,7 +1,7 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
-import { DiscordVoiceMapper } from "../define/DiscordInterface";
 import { getMapper, getDispatcher, PlayStream } from "../lib/VoiceLib";
+import { YoutubeVideos } from "../define/DiscordInterface";
 
 import axios from "axios";
 
@@ -40,27 +40,27 @@ const play = function(this: discordapp, message: discordjs.Message, args: string
 			key: this.apikey,
 			part: "id, snippet",
 			id: parameters["v"]
-		})}`).then((data) => {
-			const { status } = data;
-			if (status === 200) {
+		})}`).then((response) => {
+			if ("items" in response.data && response.data.items.length) {
+				const data: YoutubeVideos = response.data;
+
 				const dirPaths = ["..", "music", serverId];
 				let dirPath = path.resolve(__dirname);		
 				dirPaths.forEach((dir) => {
 					dirPath = path.resolve(dirPath, dir);
 					if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
 				});
-		
+
 				const filePath = path.resolve(dirPath, `${parameters["v"]}.mp3`);
 				FileWriteStream(link, filePath).then((stream) => {
 					const dispatcher = getDispatcher(mapper);
-		
 					if (dispatcher && !dispatcher.destroyed) {
 						mapper.arrayQueueStack.push(filePath);
 					} else {
 						PlayStream(mapper, stream);
 					}
 				}).catch((err: Error) => {
-					message.reply(`[ERROR]${err.message}`);	
+					message.reply(`[ERROR]${err.message}`);
 				});
 			} else {
 				message.reply("[디버그메세지]");
