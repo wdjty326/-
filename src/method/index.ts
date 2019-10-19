@@ -19,16 +19,27 @@ const method: {
 	[key: string]: Function;
 } = {
 	"ㅍ": ping,
+	"핑": ping,
 	"ㄷㅇ": help,
+	"도움": help,
 	"ㅇㅈ": connect,
+	"입장": connect,
 	"ㅌㅈ": disconnect,
+	"퇴장": disconnect,
 	"ㄱ": play,
+	"고": play,
 	"ㅁㄹ": playlist,
+	"목록": playlist,
 	"ㅋㄹ": clean,
+	"클린": clean,
 	"ㅉ": pause,
+	"정지": pause,
 	"ㄷㅅ": resume,
+	"다시": resume,
 	"ㅅㅋ": skip,
-	"ㅌㅇ": test
+	"스킵": skip,
+	"ㅌㅇ": test,
+	"택유": test
 };
 
 export default method;

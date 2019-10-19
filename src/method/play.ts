@@ -1,18 +1,14 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
-import { getMapper, getDispatcher, PlayStream } from "../lib/VoiceLib";
-import { YoutubeVideos } from "../define/DiscordInterface";
-
-import axios from "axios";
-
 import ytdl from "ytdl-core";
 import path from "path";
 import fs from "fs";
-
+import { Readable } from "stream";
 import ffmpeg from "fluent-ffmpeg";
 
-import { getURLParameter, SerializeGet } from "../lib/StringLib";
-import { Readable } from "stream";
+import YoutubeDataAPI, { YoutubeDataAPIResponse } from "../lib/YoutubeDataAPI";
+import { getMapper, getDispatcher, PlayStream } from "../lib/VoiceLib";
+import { getURLParameter } from "../lib/StringLib";
 
 type AsyncQueueType = {
 	title: string;
@@ -29,72 +25,80 @@ const play = function(this: discordapp, message: discordjs.Message, args: string
 
 	// 봇 음성방 진입 여부
 	if (mapper && args.length) {
-		// 유튜브 링크 검증
-		if (!/(youtu)\.?(be)?(\.com)?/g.test(args[0])) {
-			message.reply("[디버그메세지]유튜브 링크만 허용합니다.");
-			return;
-		}
+		let link: string = "";
+		let v: string = "";		
 
-		// 유튜브 링크 처리
-		let link = args[0];
-		if (link.indexOf("youtu.be") > 0) {
-			const parameters = link.substr(link.lastIndexOf("/") + 1);
-			link = `https://youtube.com/watch?v=${parameters}`;
-		}
+		// callback
+		const callback = (data: YoutubeDataAPIResponse) => {
+			const title = data.items[0].snippet.title;
+			const dirPaths = ["..", "music", serverId];
+			let dirPath = path.resolve(__dirname);		
+			dirPaths.forEach((dir) => {
+				dirPath = path.resolve(dirPath, dir);
+				if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
+			});
 
-		const parameters = getURLParameter(link);
+			const filePath = path.resolve(dirPath, `${v}.mp3`);
 
-		axios.get(`https://www.googleapis.com/youtube/v3/videos?${SerializeGet({
-			key: this.apikey,
-			part: "id, snippet",
-			id: parameters["v"]
-		})}`).then((response) => {
-			if (response.data.items && response.data.items.length) {
-				const VideoDatas: YoutubeVideos = response.data;
-				const title = VideoDatas.items[0].snippet.localized.title;
-				const dirPaths = ["..", "music", serverId];
-				let dirPath = path.resolve(__dirname);		
-				dirPaths.forEach((dir) => {
-					dirPath = path.resolve(dirPath, dir);
-					if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
+			if (flag) {
+				flag = false;
+				const fileWriteStream = (title: string, link: string, filePath: string) => FileWriteStream(link, filePath).then((stream) => {
+					const dispatcher = getDispatcher(mapper);
+					if (dispatcher && !dispatcher.destroyed) {
+						mapper.arrayQueueStack.push({
+							title,
+							filePath,
+						});
+					} else {
+						PlayStream(mapper, stream);
+					}
+				}).catch((err: Error) => {
+					message.reply(`[ERROR]${err.message}`);
+				}).finally(() => {
+					if (AsyncQueueStack.length) {
+						const { title, link, filePath } = AsyncQueueStack.shift() as AsyncQueueType;
+						fileWriteStream(title, link, filePath);
+					} else {
+						flag = true;
+					}
 				});
-
-				const filePath = path.resolve(dirPath, `${parameters["v"]}.mp3`);
-
-				if (flag) {
-					flag = false;
-					const fileWriteStream = (title: string, link: string, filePath: string) => FileWriteStream(link, filePath).then((stream) => {
-						const dispatcher = getDispatcher(mapper);
-						if (dispatcher && !dispatcher.destroyed) {
-							mapper.arrayQueueStack.push({
-								title,
-								filePath,
-							});
-						} else {
-							PlayStream(mapper, stream);
-						}
-					}).catch((err: Error) => {
-						message.reply(`[ERROR]${err.message}`);
-					}).finally(() => {
-						if (AsyncQueueStack.length) {
-							const { title, link, filePath } = AsyncQueueStack.shift() as AsyncQueueType;
-							fileWriteStream(title, link, filePath);
-						} else {
-							flag = true;
-						}
-					});
-					fileWriteStream(title, link, filePath);
-				} else {
-					AsyncQueueStack.push({
-						title,
-						link,
-						filePath,
-					});
-				}
+				fileWriteStream(title, link, filePath);
 			} else {
-				message.reply("[디버그메세지]");
+				AsyncQueueStack.push({
+					title,
+					link,
+					filePath,
+				});
 			}
-		});
+		};
+		// 유튜브 링크 검증
+		if (/(youtu)\.?(be)?(\.com)?/g.test(args[0])) {
+			// 유튜브 링크 처리
+			link = args[0];
+			if (link.indexOf("youtu.be") > 0) {
+				const parameters = link.substr(link.lastIndexOf("/") + 1);
+				link = `https://youtube.com/watch?v=${parameters}`;
+			}
+			const parameters = getURLParameter(link);
+			v = parameters["v"];
+
+			YoutubeDataAPI.Video({
+				key: this.apikey,
+				part: "id, snippet",
+				id: parameters["v"]
+			}).then(callback);
+		} else {
+			YoutubeDataAPI.Search({
+				key: this.apikey,
+				part: "id, snippet",
+				q: encodeURI(args.join(" ")),
+				maxResults: 1
+			}).then((data) => {
+				v = data.items[0].id.videoId;
+				link = `https://youtube.com/watch?v=${v}`;
+				callback(data);
+			});
+		}
 	}
 };
 
@@ -137,10 +141,10 @@ const FfmpegAudio = (stream: Readable) => ffmpeg()
   ])
 	.audioCodec("libmp3lame")
 	.withNoVideo()
-	.withAudioBitrate("96k")
+	.withAudioBitrate("64k")
 	.withAudioChannels(2)
 	.withAudioFrequency(48000)
-	.withAudioQuality(5)
+	.withAudioQuality(4)
 	.outputFormat("mp3");
 
 	
