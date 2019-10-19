@@ -12,9 +12,13 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 
 	// 봇 음성방 진입 여부
 	if (mapper) {
+		if (parseInt(args[0], 10)) {
+			const x = parseInt(args[0], 10) < mapper.arrayQueueStack.length 
+				? parseInt(args[0], 10) : mapper.arrayQueueStack.length;
+			for(let i=0; i < x; i++)
+				mapper.arrayQueueStack.shift();
+		}
 		const dispatcher = getDispatcher(mapper);
 		dispatcher.end();
-		// const Output = mapper.arrayQueueStack.shift();
-		// if (Output)	PlayFile(mapper, Output.filePath);
 	}
 }

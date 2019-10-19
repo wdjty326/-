@@ -104,20 +104,20 @@ const FfmpegAudio = (stream: Readable) => ffmpeg()
     .input(stream)
     .audioFilters([
     {
-      filter: 'volume',
-      options: '0.5'
+      filter: "volume",
+      options: "0.5"
     },
     {
-      filter: 'silencedetect',
-      options: 'n=-50dB:d=5'
+      filter: "silencedetect",
+      options: "n=-50dB:d=5"
     }
   ])
 	.audioCodec("libmp3lame")
 	.withNoVideo()
-	.withAudioBitrate("96k")
+	.withAudioBitrate(64)
 	.withAudioChannels(2)
-	.withAudioFrequency(48000)
-	.withAudioQuality(5)
+	.withAudioFrequency(20000)
+	.withAudioQuality(4)
 	.outputFormat("mp3");
 
 	
