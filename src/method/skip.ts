@@ -19,6 +19,6 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 				mapper.arrayQueueStack.shift();
 		}
 		const dispatcher = getDispatcher(mapper);
-		dispatcher.end();
+		if (dispatcher) dispatcher.end();
 	}
 }

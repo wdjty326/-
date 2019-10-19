@@ -16,6 +16,6 @@ export default function(this: discordapp, message: discordjs.Message, args?: str
 
 		// stack clear and dispatcher distory
 		mapper.arrayQueueStack.length = 0;
-		dispatcher.end();
+		if (dispatcher) dispatcher.end();
 	}
 };
