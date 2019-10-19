@@ -51,6 +51,7 @@ export default class DiscordApp {
 			}
 			else
 				message.reply("!=ㄷㅇ 으로 명령어 체크 바람");
-		}
+		} else if (content.includes("자살"))
+			message.reply("자살은 나빠요 ㅠㅠ");
 	}
 }
