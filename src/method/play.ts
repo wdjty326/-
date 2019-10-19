@@ -39,7 +39,7 @@ const play = function(this: discordapp, message: discordjs.Message, args: string
 			});
 
 			const filePath = path.resolve(dirPath, `${v}.mp3`);
-
+			message.reply("Searching " + title);
 			if (flag) {
 				flag = false;
 				const fileWriteStream = (title: string, link: string, filePath: string) => FileWriteStream(link, filePath).then((stream) => {
@@ -71,6 +71,7 @@ const play = function(this: discordapp, message: discordjs.Message, args: string
 				});
 			}
 		};
+
 		// 유튜브 링크 검증
 		if (/(youtu)\.?(be)?(\.com)?/g.test(args[0])) {
 			// 유튜브 링크 처리
