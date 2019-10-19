@@ -13,10 +13,6 @@ export default function(this: discordapp, message: discordjs.Message, args?: str
 			voiceChannel
 			.join()
 			.then((connection) => {
-				// const { dispatcher } = connection;
-				// dispatcher.on("end", () => {
-				// 	console.log("dispatcher end");
-				// });
 				this.connectionMapper.set(serverId, {
 					connection,
 					arrayQueueStack: [],

@@ -24,10 +24,12 @@ export const PlayStream = (mapper: DiscordVoiceMapper, stream: Readable) => (({ 
 	console.log("reason:",reason);
 
 	if (arrayQueueStack.length) {
-		const filePath = arrayQueueStack.shift() as string;
-		console.log("arrayQueueStack out:", filePath);
+		const Output = arrayQueueStack.shift();
 
-		const stream = fs.createReadStream(filePath);
-		PlayStream(mapper, stream);
+		if (Output) {
+			console.log("arrayQueueStack Output:", Output);
+			const stream = fs.createReadStream(Output.filePath);
+			PlayStream(mapper, stream);
+		}
 	}
 }))();

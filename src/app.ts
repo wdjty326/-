@@ -32,7 +32,7 @@ export default class DiscordApp {
 
 	/** login 이후 대기중일때 정보입니다. */
 	ready() {
-		console.log("[DEBUG]READY");
+		console.log("READY LISTENER");
 	}
 
 	/** 메세지를 전달 받았을때 정보입니다. */
@@ -47,12 +47,11 @@ export default class DiscordApp {
 
 			const exec = params[0].toLowerCase();
 			const args = params.splice(1);
-
 			if (exec in method) {
 				method[exec].call(this, message, args);
 			}
 			else
-				message.reply("[DEBUG]불러오지못한명령어");
+				message.reply("!=ㄷㅇ 으로 명령어 체크 바람");
 		}
 	}
 }

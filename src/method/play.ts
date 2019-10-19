@@ -41,8 +41,11 @@ const play = function(this: discordapp, message: discordjs.Message, args: string
 			part: "id, snippet",
 			id: parameters["v"]
 		})}`).then((response) => {
-			if ("items" in response.data && response.data.items.length) {
-				const data: YoutubeVideos = response.data;
+			if (
+				"items" in response.data 
+				&& response.data.items.length
+			) {
+				const VideoDatas: YoutubeVideos = response.data;
 
 				const dirPaths = ["..", "music", serverId];
 				let dirPath = path.resolve(__dirname);		
@@ -55,7 +58,10 @@ const play = function(this: discordapp, message: discordjs.Message, args: string
 				FileWriteStream(link, filePath).then((stream) => {
 					const dispatcher = getDispatcher(mapper);
 					if (dispatcher && !dispatcher.destroyed) {
-						mapper.arrayQueueStack.push(filePath);
+						mapper.arrayQueueStack.push({
+							title: VideoDatas.items[0].snippet.localized.title,
+							filePath,
+						});
 					} else {
 						PlayStream(mapper, stream);
 					}

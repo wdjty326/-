@@ -2,7 +2,10 @@ import discordjs, { StringResolvable } from "discord.js";
 
 export interface DiscordVoiceMapper {
 	connection: discordjs.VoiceConnection;
-	arrayQueueStack: string[];
+	arrayQueueStack: Array<{
+		filePath: string;
+		title: string;
+	}>;
 }
 
 export interface YoutubeVideos {
