@@ -10,6 +10,7 @@ import playlist from "./playlist";
 import pause from "./pause";
 import resume from "./resume";
 import skip from "./skip";
+import clean from "./clean";
 
 import fuck from "./test";
 
@@ -23,6 +24,7 @@ const method: {
 	"ㅌㅈ": disconnect,
 	"ㄱ": play,
 	"ㅁㄹ": playlist,
+	"ㅋㄹ": clean,
 	"ㅉ": pause,
 	"ㄷㅅ": resume,
 	"ㅅㅋ": skip,

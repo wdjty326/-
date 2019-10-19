@@ -17,8 +17,11 @@
 - 현재 재생중인 플레이를 재실행합니다.
 !=ㅅㅋ
 - 현재 재생중인 플레이를 다음 내역으로 넘깁니다.
+!=ㅋㄹ
+- 저장중인 스택및 재생중인 노래를 모두 종료합니다.
 
 
 !=ㅌㅇ
 - 택유는 귀엽습니다.
-git link : https://github.com/wdjty326/discordbot-me
+
+git링크 : https://github.com/wdjty326/discordbot-me

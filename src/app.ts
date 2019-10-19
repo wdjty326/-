@@ -3,18 +3,18 @@ import method from "./method";
 
 import { DiscordVoiceMapper } from "./define/DiscordInterface";
 
-/** 커맨드의 시작라인입니다. */
+/** command line startwith */
 const CommandLine = "!=";
 
-/** discord 메인 클래스입니다. */
+/** discord main class. */
 export default class DiscordApp {
-	/** 연결할 디스코드 클라이언트 입니다. */
+	/** connect discord client. */
 	protected client: discordjs.Client = new discordjs.Client();
 
-	/** 음성 연결방 클라이언트 */
+	/** voice room connection mapper */
 	protected connectionMapper: Map<string, DiscordVoiceMapper> = new Map();
 
-	/** google api key 정보 */
+	/** google api key */
 	protected apikey: string = "";
 
 	constructor(token: string, apikey: string) {	
@@ -24,7 +24,6 @@ export default class DiscordApp {
 
 		this.client.on("ready", this.ready);
 		this.client.on("message", this.message);
-
 		this.client.login(token).catch((reason) => {
 			console.log(reason);
 		});
