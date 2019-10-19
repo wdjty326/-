@@ -2,7 +2,7 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import { getMapper, getDispatcher, PlayFile } from "../lib/VoiceLib";
+import { getMapper, getDispatcher } from "../lib/VoiceLib";
 import { DiscordVoiceMapper } from "../define/DiscordInterface";
 
 export default function(this: discordapp, message: discordjs.Message, args: string[]) {
@@ -13,8 +13,8 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 	// 봇 음성방 진입 여부
 	if (mapper) {
 		if (parseInt(args[0], 10)) {
-			const x = parseInt(args[0], 10) < mapper.arrayQueueStack.length 
-				? parseInt(args[0], 10) : mapper.arrayQueueStack.length;
+			const x = parseInt(args[0], 10) - 1 < mapper.arrayQueueStack.length 
+				? parseInt(args[0], 10) - 1 : mapper.arrayQueueStack.length;
 			for(let i=0; i < x; i++)
 				mapper.arrayQueueStack.shift();
 		}

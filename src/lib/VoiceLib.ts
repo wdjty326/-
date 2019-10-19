@@ -20,9 +20,7 @@ export const PlayFile = (mapper: DiscordVoiceMapper, path: string) => PlayStream
 export const PlayStream = (mapper: DiscordVoiceMapper, stream: Readable) => (({ connection, arrayQueueStack } = mapper) => connection.playStream(stream, {
 	seek: 0,
 	volume: 1
-}).on("end", (reason) => {
-	console.log("reason:",reason);
-
+}).on("end", () => {
 	if (arrayQueueStack.length) {
 		const Output = arrayQueueStack.shift();
 
@@ -32,4 +30,9 @@ export const PlayStream = (mapper: DiscordVoiceMapper, stream: Readable) => (({ 
 			PlayStream(mapper, stream);
 		}
 	}
+}).on("error", (err) => {
+	const dispatcher = getDispatcher(mapper);
+	if (dispatcher) dispatcher.end();
+
+	console.log("ERROR:", err.message);
 }))();

@@ -12,7 +12,7 @@ import resume from "./resume";
 import skip from "./skip";
 import clean from "./clean";
 
-import fuck from "./test";
+import test from "./test";
 
 // 명령어 한글 패치
 const method: {
@@ -28,7 +28,7 @@ const method: {
 	"ㅉ": pause,
 	"ㄷㅅ": resume,
 	"ㅅㅋ": skip,
-	"ㅌㅇ": fuck
+	"ㅌㅇ": test
 };
 
 export default method;

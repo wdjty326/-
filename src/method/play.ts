@@ -14,6 +14,14 @@ import ffmpeg from "fluent-ffmpeg";
 import { getURLParameter, SerializeGet } from "../lib/StringLib";
 import { Readable } from "stream";
 
+type AsyncQueueType = {
+	title: string;
+	link: string;
+	filePath: string;
+};
+const AsyncQueueStack: Array<AsyncQueueType> = [];
+let flag = true;
+
 const play = function(this: discordapp, message: discordjs.Message, args: string[]) {
 	// 호출 메세지의 서버 ID
 	const serverId = message.guild.id;
@@ -41,12 +49,9 @@ const play = function(this: discordapp, message: discordjs.Message, args: string
 			part: "id, snippet",
 			id: parameters["v"]
 		})}`).then((response) => {
-			if (
-				"items" in response.data 
-				&& response.data.items.length
-			) {
+			if (response.data.items && response.data.items.length) {
 				const VideoDatas: YoutubeVideos = response.data;
-
+				const title = VideoDatas.items[0].snippet.localized.title;
 				const dirPaths = ["..", "music", serverId];
 				let dirPath = path.resolve(__dirname);		
 				dirPaths.forEach((dir) => {
@@ -55,19 +60,37 @@ const play = function(this: discordapp, message: discordjs.Message, args: string
 				});
 
 				const filePath = path.resolve(dirPath, `${parameters["v"]}.mp3`);
-				FileWriteStream(link, filePath).then((stream) => {
-					const dispatcher = getDispatcher(mapper);
-					if (dispatcher && !dispatcher.destroyed) {
-						mapper.arrayQueueStack.push({
-							title: VideoDatas.items[0].snippet.localized.title,
-							filePath,
-						});
-					} else {
-						PlayStream(mapper, stream);
-					}
-				}).catch((err: Error) => {
-					message.reply(`[ERROR]${err.message}`);
-				});
+
+				if (flag) {
+					flag = false;
+					const fileWriteStream = (title: string, link: string, filePath: string) => FileWriteStream(link, filePath).then((stream) => {
+						const dispatcher = getDispatcher(mapper);
+						if (dispatcher && !dispatcher.destroyed) {
+							mapper.arrayQueueStack.push({
+								title,
+								filePath,
+							});
+						} else {
+							PlayStream(mapper, stream);
+						}
+					}).catch((err: Error) => {
+						message.reply(`[ERROR]${err.message}`);
+					}).finally(() => {
+						if (AsyncQueueStack.length) {
+							const { title, link, filePath } = AsyncQueueStack.shift() as AsyncQueueType;
+							fileWriteStream(title, link, filePath);
+						} else {
+							flag = true;
+						}
+					});
+					fileWriteStream(title, link, filePath);
+				} else {
+					AsyncQueueStack.push({
+						title,
+						link,
+						filePath,
+					});
+				}
 			} else {
 				message.reply("[디버그메세지]");
 			}
@@ -81,7 +104,7 @@ const FileWriteStream = (link: string, filePath: string) => new Promise<Readable
 		resolve(fs.createReadStream(filePath));
 	}	else {
 		try {
-			const stream = ytdl(link, {	filter: "audio" });
+			const stream = ytdl(link);
 			// ffmpeg 를 사용하여 mp4 를 mp3 코텍으로 변경합니다.
 			FfmpegAudio(stream)
 			.on("error", (err) => {
@@ -114,10 +137,10 @@ const FfmpegAudio = (stream: Readable) => ffmpeg()
   ])
 	.audioCodec("libmp3lame")
 	.withNoVideo()
-	.withAudioBitrate(64)
+	.withAudioBitrate("96k")
 	.withAudioChannels(2)
-	.withAudioFrequency(20000)
-	.withAudioQuality(4)
+	.withAudioFrequency(48000)
+	.withAudioQuality(5)
 	.outputFormat("mp3");
 
 	

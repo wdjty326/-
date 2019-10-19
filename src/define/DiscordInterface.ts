@@ -1,4 +1,4 @@
-import discordjs, { StringResolvable } from "discord.js";
+import discordjs from "discord.js";
 
 export interface DiscordVoiceMapper {
 	connection: discordjs.VoiceConnection;
