@@ -11,10 +11,10 @@ import pause from "./pause";
 import resume from "./resume";
 import skip from "./skip";
 import clean from "./clean";
+import loop from "./loop";
 
-import test from "./test";
 
-// 명령어 한글 패치
+// command korean path
 const method: {
 	[key: string]: Function;
 } = {
@@ -38,8 +38,8 @@ const method: {
 	"다시": resume,
 	"ㅅㅋ": skip,
 	"스킵": skip,
-	"ㅌㅇ": test,
-	"택유": test
+	"ㄹㅍ": loop,
+	"루프": loop
 };
 
 export default method;

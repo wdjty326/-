@@ -50,8 +50,8 @@ export default class DiscordApp {
 				method[exec].call(this, message, args);
 			}
 			else
-				message.reply("!=ㄷㅇ 으로 명령어 체크 바람");
+				message.channel.send("!=ㄷㅇ 으로 명령어 체크 바람");
 		} else if (content.includes("자살"))
-			message.reply("다시 한번 생각해보는게 어때?");
+			message.channel.send("다시 한번 띵킹해보는 것이 어때?");
 	}
 }

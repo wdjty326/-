@@ -11,7 +11,8 @@ export default function(this: discordapp, message: discordjs.Message, args?: str
 
 	// 봇 음성방 진입 여부
 	if (mapper) {
-		message.reply("대기목록 \n" 
+		message.channel.send(
+			"대기목록\n" 
 			+ mapper.arrayQueueStack.map((Output, Index) => `${Index + 1}. ${Output.title}`).join("\n")
 		);
 	}
