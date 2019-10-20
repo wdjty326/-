@@ -13,6 +13,7 @@ import skip from "./skip";
 import clean from "./clean";
 import loop from "./loop";
 
+import dev from "./dev";
 
 // command korean path
 const method: {
@@ -39,7 +40,8 @@ const method: {
 	"ㅅㅋ": skip,
 	"스킵": skip,
 	"ㄹㅍ": loop,
-	"루프": loop
+	"루프": loop,
+	dev
 };
 
 export default method;

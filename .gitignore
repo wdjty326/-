@@ -13,3 +13,5 @@ client_url
 # 구글 api 연동 키셋이다
 api_key
 test
+
+dev/**/*.m4a
