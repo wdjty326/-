@@ -1,11 +1,11 @@
 // 개발자용
 import discordjs from "discord.js";
-import discordapp from "../app";
+import discordapp from "../../app";
 import fs from "fs";
 import path from "path";
-import { getMapper, getDispatcher, PlayStream } from "../lib/VoiceLib";
+import { getMapper, getDispatcher, PlayStream } from "../../lib/VoiceLib";
 
-import { DiscordVoiceMapper } from "../define/DiscordInterface";
+import { DiscordVoiceMapper } from "../../define/DiscordInterface";
 
 export default function(this: discordapp, message: discordjs.Message, args?: string[]): void {
 	// 호출 메세지의 서버 ID
@@ -35,6 +35,6 @@ export default function(this: discordapp, message: discordjs.Message, args?: str
 					break;
 			}
 		} else {
-			message.channel.send("!=ㄷㅇ dev");
+			message.channel.send("=ㄷㅇ dev");
 		}
 };

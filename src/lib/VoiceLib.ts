@@ -50,6 +50,7 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 		try {
 			const stream = ytdl(link, {
 				filter: "audio",
+				quality: "highestaudio",
 				range: {
 					start: 0,
 					end: 10485760
@@ -87,8 +88,8 @@ const FfmpegAudio = (stream: Readable) => ffmpeg()
   ])
 	.audioCodec("libmp3lame")
 	.withNoVideo()
-	.withAudioBitrate("64k")
+	.withAudioBitrate("96k")
 	.withAudioChannels(2)
 	.withAudioFrequency(48000)
-	.withAudioQuality(4)
+	.withAudioQuality(5)
 	.outputFormat("mp3");

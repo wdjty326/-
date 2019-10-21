@@ -11,8 +11,13 @@ export default function(this: discordapp, message: discordjs.Message, args?: str
 
 	// 봇 음성방 진입 여부
 	if (mapper) {
+		const currentTitle = (mapper.currentAudioInfo) ? mapper.currentAudioInfo.title : "";
 		message.channel.send(
-			"대기목록\n" 
+			"*현재재생목록\n"
+			+ "-"
+			+ currentTitle
+			+ "\n"
+			+ "*대기목록\n" 
 			+ mapper.arrayQueueStack.map((Output, Index) => `${Index + 1}. ${Output.title}`).join("\n")
 		);
 	}
