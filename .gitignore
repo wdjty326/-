@@ -14,4 +14,11 @@ client_url
 api_key
 test
 
-dev/**/*.m4a
+# music file
+src/admin/**/*.m4a
+src/admin/**/*.mp3
+src/admin/**/*.mkv
+
+# log file
+discordbot.out
+discordbot.err

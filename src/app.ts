@@ -46,12 +46,8 @@ export default class DiscordApp {
 
 			const exec = params[0].toLowerCase();
 			const args = params.splice(1);
-			if (exec in method) {
-				method[exec].call(this, message, args);
-			}
-			else
-				message.channel.send("=ㄷㅇ 으로 명령어 체크 바람");
-		} else if (content.includes("자살"))
-			message.channel.send("다시 한번 띵킹해보는 것이 어때?");
+			if (exec in method)	method[exec].call(this, message, args);
+			else	message.channel.send("=ㄷㅇ 으로 명령어 체크 바람");
+		}
 	}
 }
