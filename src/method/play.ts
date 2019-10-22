@@ -3,6 +3,7 @@ import discordapp from "../app";
 import path from "path";
 import fs from "fs";
 
+import connect from "./connect";
 import YoutubeDataAPI, { YoutubeDataAPIResponse } from "../lib/YoutubeDataAPI";
 import { getMapper, getDispatcher, PlayStream, FileWriteStream } from "../lib/VoiceLib";
 import { getURLParameter } from "../lib/StringLib";
@@ -19,13 +20,13 @@ let flag = true;
 /** 
  * youtube music download and play
  */
-export default function(this: discordapp, message: discordjs.Message, args: string[]) {
+export default function play(this: discordapp, message: discordjs.Message, args: string[]) {
 	// call message server id
 	const serverId = message.guild.id;
 	const mapper = getMapper.call(this, serverId);
 
 	// mapper checking
-	if (mapper && args.length) {
+	if (mapper) {
 		let link: string = "";
 		let v: string = "";		
 
@@ -99,5 +100,12 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 				callback(data);
 			});
 		}
+	} else {
+		// reconnect
+		new Promise<void>((resolve) => {
+			connect.call(this, message, args, resolve);
+		}).then(() => {
+			play.call(this, message, args);
+		});
 	}
 };

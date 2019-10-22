@@ -2,7 +2,7 @@ import discordjs from "discord.js";
 import discordapp from "../app";
 
 /** bot in voicechannel */
-export default function(this: discordapp, message: discordjs.Message, args?: string[]) {
+export default function(this: discordapp, message: discordjs.Message, args?: string[], callback?: () => void) {
 	const { voiceChannel } = message.member;
 	// call message server id
 	const serverId = message.guild.id;
@@ -17,6 +17,7 @@ export default function(this: discordapp, message: discordjs.Message, args?: str
 					connection,
 					arrayQueueStack: []
 				});
+				if (callback) callback();
 			})
 			.catch((err) => message.reply(err.toString()));		
 		} else {
