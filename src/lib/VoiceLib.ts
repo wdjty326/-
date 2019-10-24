@@ -21,8 +21,8 @@ export const PlayFile = (mapper: DiscordVoiceMapper, path: string) => PlayStream
 export const PlayStream = (mapper: DiscordVoiceMapper, stream: Readable) => (({ connection, arrayQueueStack, currentAudioInfo } = mapper) => connection.playStream(stream, {
 	seek: 0,
 	volume: 1,
-	passes: 1000,
-	bitrate: 44100
+	passes: 1024,
+	bitrate: 22050
 }).on("end", () => {
 	// 루프가 실행중이므로 완료된 노래를 뒤로 보낸다.
 	if (mapper.isLoop) arrayQueueStack.push(currentAudioInfo as AudioInfo);
@@ -72,9 +72,11 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 const FfmpegAudio = (stream: Readable) => ffmpeg()
 	.input(stream)
 	.audioCodec("libmp3lame")
+	.audioFilters("volume=0.5")
+  .audioFilters("silencedetect=n=-50dB:d=5")
 	.withNoVideo()
-	.withAudioBitrate("128k")
+	.withAudioBitrate(64)
 	.withAudioChannels(2)
-	.withAudioFrequency(44100)
+	.withAudioFrequency(22050)
 	.withAudioQuality(5)
 	.outputFormat("mp3");
