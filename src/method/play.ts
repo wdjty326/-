@@ -5,7 +5,14 @@ import fs from "fs";
 
 import connect from "./connect";
 import YoutubeDataAPI, { YoutubeDataAPIResponse } from "../lib/YoutubeDataAPI";
-import { getMapper, getDispatcher, PlayStream, FileWriteStream } from "../lib/VoiceLib";
+import {
+	getMapper,
+	getDispatcher,
+	PlayStream,
+	FileWriteStream,
+	getFileSize,
+	InitialPlayOptions
+} from "../lib/VoiceLib";
 import { getURLParameter } from "../lib/StringLib";
 
 // async queue stack type
@@ -49,8 +56,15 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 					if (dispatcher && !dispatcher.destroyed) {
 						mapper.arrayQueueStack.push({	title,	filePath	});
 					} else {
-						mapper.currentAudioInfo = {	title,	filePath	};
-						PlayStream(mapper, stream);
+						mapper.playingAudio = {	title,	filePath	};
+						const size = getFileSize(filePath);
+
+						PlayStream(mapper, stream, {
+							...InitialPlayOptions,
+							...{
+								passes: Math.round(size / 1024)
+							}
+						});
 					}
 				}).catch((err: Error) => {
 					message.channel.send(`[ERROR]${err.message}`);

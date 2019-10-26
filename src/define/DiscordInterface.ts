@@ -9,6 +9,6 @@ export interface DiscordVoiceMapper {
 	connection: discordjs.VoiceConnection;
 	arrayQueueStack: Array<AudioInfo>;
 
-	currentAudioInfo?: AudioInfo;
+	playingAudio?: AudioInfo;
 	isLoop?: boolean;
 }

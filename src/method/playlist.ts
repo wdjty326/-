@@ -11,7 +11,7 @@ export default function(this: discordapp, message: discordjs.Message, args?: str
 
 	// 봇 음성방 진입 여부
 	if (mapper) {
-		const currentTitle = (mapper.currentAudioInfo) ? mapper.currentAudioInfo.title : "";
+		const currentTitle = (mapper.playingAudio) ? mapper.playingAudio.title : "";
 		message.channel.send(
 			"*현재재생목록\n"
 			+ "-"

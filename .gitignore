@@ -20,5 +20,5 @@ src/admin/**/*.mp3
 src/admin/**/*.mkv
 
 # log file
-discordbot.out
-discordbot.err
+discordbot-me.out
+discordbot-me.err
