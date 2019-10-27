@@ -36,23 +36,26 @@ export const PlayStream = (mapper: DiscordVoiceMapper, stream: Readable, option:
 	const { connection, arrayQueueStack, playingAudio } = mapper;
 
 	connection.playStream(stream, option).on("end", () => {
-		// 루프가 실행중이므로 완료된 노래를 뒤로 보낸다.
+		// loop
 		if (mapper.isLoop) arrayQueueStack.push(playingAudio as AudioInfo);
 	
 		if (arrayQueueStack.length) {
 			const Output = arrayQueueStack.shift();
 			if (Output) {
 				console.log("arrayQueueStack Output:", Output);
-				const stream = fs.createReadStream(Output.filePath);
-				const size = getFileSize(Output.filePath);
+				// 1 second delay
+				setTimeout(() => {
+					const stream = fs.createReadStream(Output.filePath);
+					const size = getFileSize(Output.filePath);
 
-				mapper.playingAudio = Output
-				PlayStream(mapper, stream, {
-					...option,
-					...{
-						passes: Math.round(size / 2048)
-					}
-				});
+					mapper.playingAudio = Output
+					PlayStream(mapper, stream, {
+						...option,
+						...{
+							passes: Math.round(size / 2048)
+						}
+					});
+				}, 1000);
 			}
 		}
 	}).on("error", (err) => {
