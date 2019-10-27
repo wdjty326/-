@@ -17,7 +17,7 @@ export const InitialPlayOptions: PlayOptions = {
 	seek: 0,
 	volumn: 1,
 	passes: 1,
-	bitrate: 48000
+	bitrate: 22050
 };
 
 /** discordapp의 connectionMapper에서 DiscordVoiceMapper 정보를 가져옵니다. */
@@ -96,8 +96,8 @@ const FfmpegAudio = (stream: Readable) => ffmpeg()
 	.input(stream)
 	.audioCodec("libmp3lame")
 	.withNoVideo()
-	.withAudioBitrate(128)
+	.withAudioBitrate(96)
 	.withAudioChannels(2)
-	.withAudioFrequency(48000)
+	.withAudioFrequency(22050)
 	.withAudioQuality(5)
 	.outputFormat("mp3");
