@@ -117,7 +117,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 	} else {
 		// reconnect
 		new Promise<void>((resolve) => {
-			connect.call(this, message, args, resolve);
+			connect.call(this, message, resolve);
 		}).then(() => {
 			play.call(this, message, args);
 		});

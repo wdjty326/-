@@ -47,7 +47,7 @@ export default class DiscordApp {
 			const exec = params[0].toLowerCase();
 			const args = params.splice(1);
 			if (exec in method)	method[exec].call(this, message, args);
-			else	message.channel.send("=ㄷㅇ 으로 명령어 체크 바람");
+			else	message.channel.send("=ㄷㅇ(or 도움) 으로 명령어 체크 바람");
 		}
 	}
 }

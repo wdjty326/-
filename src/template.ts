@@ -1,3 +1,5 @@
+export const RemoveMethodGuideContent = "=ㅈㄱ(or 제거) [삭제할 목록 숫자] [추가 삭제 개수]";
+
 // 메인 가이드
 export const MainGuideContent = `
 # 도움말입니다.
@@ -22,6 +24,8 @@ export const MainGuideContent = `
 - 저장중인 스택및 재생중인 노래를 모두 종료합니다.
 =ㄹㅍ(or 루프)
 - 현재 저장된 노래스택을 기준으로 루프를 돌립니다.
+${RemoveMethodGuideContent}
+- 목록에 저장된 내용을 제거합니다.
 
 git링크 : https://github.com/wdjty326/discordbot-me
 `;
@@ -37,3 +41,5 @@ export const DevGuideContent = `
 - Developer Comments List.
 	only a certain person can do it.
 `;
+
+export const NaturalNumberException = "0 이상의 자연수로 입력하세요.";

@@ -5,7 +5,7 @@ import { getMapper } from "../lib/VoiceLib";
 
 import { DiscordVoiceMapper } from "../define/DiscordInterface";
 
-export default function(this: discordapp, message: discordjs.Message, args?: string[]): void {
+export default function(this: discordapp, message: discordjs.Message): void {
 	// call message server id
 	const serverId = message.guild.id;
 	const mapper = getMapper.call(this, serverId) as DiscordVoiceMapper | null;

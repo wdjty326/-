@@ -2,7 +2,7 @@ import discordjs from "discord.js";
 import discordapp from "../app";
 
 /** bot in voicechannel */
-export default function(this: discordapp, message: discordjs.Message, args?: string[], callback?: () => void) {
+export default function(this: discordapp, message: discordjs.Message, callback?: () => void) {
 	const { voiceChannel } = message.member;
 	// call message server id
 	const serverId = message.guild.id;
