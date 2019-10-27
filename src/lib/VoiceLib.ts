@@ -50,7 +50,7 @@ export const PlayStream = (mapper: DiscordVoiceMapper, stream: Readable, option:
 				PlayStream(mapper, stream, {
 					...option,
 					...{
-						passes: Math.round(size / 1024)
+						passes: Math.round(size / 2048)
 					}
 				});
 			}

@@ -62,7 +62,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 						PlayStream(mapper, stream, {
 							...InitialPlayOptions,
 							...{
-								passes: Math.round(size / 1024)
+								passes: Math.round(size / 2048)
 							}
 						});
 					}
