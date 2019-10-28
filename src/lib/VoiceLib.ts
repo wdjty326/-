@@ -1,55 +1,45 @@
-import discordapp from "../app";
-import { AudioInfo, DiscordVoiceMapper } from "../define/DiscordInterface";
-import { StreamDispatcher } from "discord.js";
+import { StreamOptions } from "discord.js";
 import { Readable } from "stream";
 import ffmpeg from "fluent-ffmpeg";
 import ytdl from "ytdl-core";
 import fs from "fs";
 
-interface PlayOptions {
-	seek: number;
-	volumn: number;
-	passes: number;
-	bitrate: number;
-}
+import { AudioInfo } from "../define/CommonType";
+import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
 
-export const InitialPlayOptions: PlayOptions = {
+export const InitialPlayOptions: StreamOptions = {
 	seek: 0,
-	volumn: 1,
+	volume: 1,
 	passes: 1,
 	bitrate: 22050
 };
 
-/** discordapp의 connectionMapper에서 DiscordVoiceMapper 정보를 가져옵니다. */
-export const getMapper = function(this: discordapp, serverId: string): DiscordVoiceMapper | null {
-	return (this.connectionMapper.has(serverId)) ? this.connectionMapper.get(serverId) as DiscordVoiceMapper : null;
-};
-
-/** mapper에서 dispatcher를 가져옵니다. */
-export const getDispatcher = (mapper: DiscordVoiceMapper): StreamDispatcher => mapper.connection.dispatcher;
-
 /** 경로에 있는 파일을 재생합니다. */
-export const PlayFile = (mapper: DiscordVoiceMapper, path: string, option: PlayOptions = InitialPlayOptions) => PlayStream(mapper, fs.createReadStream(path), option);
+export const PlayFile = (obj: DiscordVoiceInfomation, path: string, option: StreamOptions = InitialPlayOptions) => PlayStream(obj, fs.createReadStream(path), option);
 
 /** stream정보를 재생합니다. */
-export const PlayStream = (mapper: DiscordVoiceMapper, stream: Readable, option: PlayOptions = InitialPlayOptions) => {
-	const { connection, arrayQueueStack, playingAudio } = mapper;
-
+export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option: StreamOptions = InitialPlayOptions) => {
+	const { connection, arrayQueueStack, playingAudio } = obj;
+	stream.on("end", () => {
+		console.log("end stream");
+	});
 	connection.playStream(stream, option).on("end", () => {
+		// stream close
+		connection.dispatcher.stream.destroy();	
+
 		// loop
-		if (mapper.isLoop) arrayQueueStack.push(playingAudio as AudioInfo);
+		if (obj.isQueueRepeat) arrayQueueStack.push(playingAudio as AudioInfo);
 	
 		if (arrayQueueStack.length) {
 			const Output = arrayQueueStack.shift();
 			if (Output) {
-				console.log("arrayQueueStack Output:", Output);
 				// 1 second delay
 				setTimeout(() => {
 					const stream = fs.createReadStream(Output.filePath);
 					const size = getFileSize(Output.filePath);
 
-					mapper.playingAudio = Output
-					PlayStream(mapper, stream, {
+					obj.playingAudio = Output
+					PlayStream(obj, stream, {
 						...option,
 						...{
 							passes: Math.round(size / 2048)
@@ -59,10 +49,15 @@ export const PlayStream = (mapper: DiscordVoiceMapper, stream: Readable, option:
 			}
 		}
 	}).on("error", (err) => {
-		const dispatcher = getDispatcher(mapper);
-		if (dispatcher) dispatcher.end();
-	
-		console.log("ERROR:", err.message);
+		const dispatcher = obj.connection.dispatcher;
+		// loop forced initialization
+		if (obj.isQueueRepeat) obj.isQueueRepeat = false;
+
+		if (dispatcher) {
+			if (dispatcher.stream) dispatcher.stream.destroy();
+			dispatcher.end();
+		}
+		console.log(err.message);
 	});
 }
 

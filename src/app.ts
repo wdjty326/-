@@ -1,7 +1,7 @@
-import discordjs from "discord.js";
+import discordjs, { StreamDispatcher } from "discord.js";
 import method from "./method";
 
-import { DiscordVoiceMapper } from "./define/DiscordInterface";
+import DiscordVoiceInfomation from "define/DiscordVoiceInterface";
 
 /** command line startwith */
 const CommandLine = "=";
@@ -12,7 +12,7 @@ export default class DiscordApp {
 	protected client: discordjs.Client = new discordjs.Client();
 
 	/** voice room connection mapper */
-	protected connectionMapper: Map<string, DiscordVoiceMapper> = new Map();
+	protected connectionMapper: Map<string, DiscordVoiceInfomation> = new Map();
 
 	/** google api key */
 	protected apikey: string = "";
@@ -20,6 +20,12 @@ export default class DiscordApp {
 	constructor(token: string, apikey: string) {	
 		this.ready = this.ready.bind(this);
 		this.message = this.message.bind(this);
+
+		this.connection = this.connection.bind(this);
+		this.dispatcher = this.dispatcher.bind(this);
+		this.validate = this.validate.bind(this);
+		this.delete = this.delete.bind(this);
+
 		this.apikey = apikey;
 
 		this.client.on("ready", this.ready);
@@ -49,5 +55,24 @@ export default class DiscordApp {
 			if (exec in method)	method[exec].call(this, message, args);
 			else	message.channel.send("=ㄷㅇ(or 도움) 으로 명령어 체크 바람");
 		}
+	}
+
+	/** */
+	validate(id: string): boolean {
+		return this.connectionMapper.has(id);
+	}
+
+	/** */
+	connection(id: string): DiscordVoiceInfomation {
+		return this.connectionMapper.get(id) as DiscordVoiceInfomation;
+	}
+
+	delete(id: string): void {
+		this.connectionMapper.delete(id);
+	}
+
+	/** */
+	dispatcher(id: string): StreamDispatcher {
+		return this.connection(id).connection.dispatcher;
 	}
 }

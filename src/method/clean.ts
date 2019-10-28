@@ -1,23 +1,19 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import { getMapper, getDispatcher } from "../lib/VoiceLib";
-
-import { DiscordVoiceMapper } from "../define/DiscordInterface";
-
 /* array QueueStack clear */
 export default function(this: discordapp, message: discordjs.Message): void {
 	// call message server id
-	const serverId = message.guild.id;
-	const mapper = getMapper.call(this, serverId) as DiscordVoiceMapper | null;
+	const id = message.guild.id;
 
-	if (mapper) {
-		const dispatcher = getDispatcher(mapper);
+	if (this.validate(id)) {
+		const obj = this.connection(id);
+		const dispatcher = this.dispatcher(id);
 
 		// stack clear and dispatcher distory
-		mapper.arrayQueueStack.length = 0;
+		obj.arrayQueueStack.length = 0;
 		// loop forced initialization
-		if (mapper.isLoop) mapper.isLoop = false;
+		if (obj.isQueueRepeat) obj.isQueueRepeat = false;
 		if (dispatcher) dispatcher.end();
 	}
 };

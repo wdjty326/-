@@ -1,16 +1,13 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import { getMapper, getDispatcher } from "../lib/VoiceLib";
-
 /** pause music */
 export default function(this: discordapp, message: discordjs.Message) {
 	// call message server id
-	const serverId = message.guild.id;
-	const mapper = getMapper.call(this, serverId);
+	const id = message.guild.id;
 
-	if (mapper) {
-		const dispatcher = getDispatcher(mapper);
+	if (this.validate(id)) {
+		const dispatcher = this.dispatcher(id);
 		if (dispatcher)	dispatcher.pause();
 	}
 }

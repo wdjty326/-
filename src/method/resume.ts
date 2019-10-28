@@ -1,17 +1,11 @@
-/** */
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import { getMapper, getDispatcher } from "../lib/VoiceLib";
-
 export default function(this: discordapp, message: discordjs.Message) {
-	// 호출 메세지의 서버 ID
-	const serverId = message.guild.id;
-	const mapper = getMapper.call(this, serverId);
+	const id = message.guild.id;
 
-	// 봇 음성방 진입 여부
-	if (mapper) {
-		const dispatcher = getDispatcher(mapper);
+	if (this.validate(id)) {
+		const dispatcher = this.dispatcher(id);
 		if (dispatcher)	dispatcher.resume();
 	}
 }

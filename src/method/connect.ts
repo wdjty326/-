@@ -5,19 +5,24 @@ import discordapp from "../app";
 export default function(this: discordapp, message: discordjs.Message, callback?: () => void) {
 	const { voiceChannel } = message.member;
 	// call message server id
-	const serverId = message.guild.id;
+	const id = message.guild.id;
 	// call user inner voice channel
 	if (voiceChannel) {
 		// checking connection infomation
-		if (!this.connectionMapper.has(serverId)) {
+		if (!this.validate(id)) {
 			voiceChannel
 			.join()
 			.then((connection) => {
-				this.connectionMapper.set(serverId, {
-					connection,
-					arrayQueueStack: []
-				});
-				if (callback) callback();
+				if (connection.status === 0) {
+					this.connectionMapper.set(id, {
+						connection,
+						arrayQueueStack: [],
+						playingAudio: null,
+						isQueueRepeat: false
+					});
+
+					if (typeof callback === "function") callback();
+				}
 			})
 			.catch((err) => message.reply(err.toString()));		
 		} else {

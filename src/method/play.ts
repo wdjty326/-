@@ -4,10 +4,8 @@ import path from "path";
 import fs from "fs";
 
 import connect from "./connect";
-import YoutubeDataAPI, { YoutubeDataAPIResponse } from "../lib/YoutubeDataAPI";
+import YoutubeDataAPI from "../lib/YoutubeDataAPI";
 import {
-	getMapper,
-	getDispatcher,
 	PlayStream,
 	FileWriteStream,
 	getFileSize,
@@ -15,12 +13,9 @@ import {
 } from "../lib/VoiceLib";
 import { getURLParameter } from "../lib/StringLib";
 
-// async queue stack type
-type AsyncQueueType = {
-	title: string;
-	link: string;
-	filePath: string;
-};
+import { AsyncQueueType } from "../define/CommonType";
+import YoutubeDataAPIResponse from "../define/YoutubeDataInterface";
+
 const AsyncQueueStack: Array<AsyncQueueType> = [];
 let flag = true;
 
@@ -29,18 +24,18 @@ let flag = true;
  */
 export default function play(this: discordapp, message: discordjs.Message, args: string[]) {
 	// call message server id
-	const serverId = message.guild.id;
-	const mapper = getMapper.call(this, serverId);
+	const id = message.guild.id;
 
 	// mapper checking
-	if (mapper) {
+	if (this.validate(id)) {
+		const obj = this.connection(id);
 		let link: string = "";
 		let v: string = "";		
 
 		// callback
 		const callback = (data: YoutubeDataAPIResponse) => {
 			const title = data.items[0].snippet.title;
-			const dirPaths = ["..", "music", serverId];
+			const dirPaths = ["..", "music", id];
 			let dirPath = path.resolve(__dirname);		
 			dirPaths.forEach((dir) => {
 				dirPath = path.resolve(dirPath, dir);
@@ -52,19 +47,22 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 			if (flag) {
 				flag = false;
 				const fileWriteStream = (title: string, link: string, filePath: string) => FileWriteStream(link, filePath).then((stream) => {
-					const dispatcher = getDispatcher(mapper);
-					if (dispatcher && !dispatcher.destroyed) {
-						mapper.arrayQueueStack.push({	title,	filePath	});
-					} else {
-						mapper.playingAudio = {	title,	filePath	};
+					const dispatcher = this.dispatcher(id);
+					if (
+						!dispatcher
+						|| dispatcher.destroyed
+					) {
+						obj.playingAudio = {	title,	filePath	};
 						const size = getFileSize(filePath);
 
-						PlayStream(mapper, stream, {
+						PlayStream(obj, stream, {
 							...InitialPlayOptions,
 							...{
 								passes: Math.round(size / 2048)
 							}
 						});
+					} else {
+						obj.arrayQueueStack.push({	title,	filePath	});										
 					}
 				}).catch((err: Error) => {
 					message.channel.send(`[ERROR]${err.message}`);

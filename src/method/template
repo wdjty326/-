@@ -3,7 +3,7 @@ import discordapp from "../app";
 
 import { getMapper } from "../lib/VoiceLib";
 
-import { DiscordVoiceMapper } from "../define/DiscordInterface";
+import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
 
 export default function(this: discordapp, message: discordjs.Message, args?: string[]): void {
 	// call message server id

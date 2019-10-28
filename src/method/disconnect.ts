@@ -1,17 +1,17 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import { DiscordVoiceMapper } from "../define/DiscordInterface";
-
 /** bot out voicechannel */
 export default function(this: discordapp, message: discordjs.Message) {
 	// call message server id
-	const serverId = message.guild.id;
+	const id = message.guild.id;
+	
+	if (this.validate(id)) {
+		const obj = this.connection(id);
 
-	if (this.connectionMapper.has(serverId)) {
-		const mapper = this.connectionMapper.get(serverId) as DiscordVoiceMapper;		
-		mapper.connection.disconnect();
-		this.connectionMapper.delete(serverId);
-		message.channel.send("바위");
+		if(obj.connection.dispatcher) obj.connection.dispatcher.end();
+		obj.connection.disconnect();
+
+		this.delete(id);
 	}
 };
