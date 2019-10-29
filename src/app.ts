@@ -17,6 +17,8 @@ export default class DiscordApp {
 	/** google api key */
 	protected apikey: string = "";
 
+	protected method: method;
+
 	constructor(token: string, apikey: string) {	
 		this.ready = this.ready.bind(this);
 		this.message = this.message.bind(this);
@@ -27,6 +29,8 @@ export default class DiscordApp {
 		this.delete = this.delete.bind(this);
 
 		this.apikey = apikey;
+		
+		this.method = new method(this);
 
 		this.client.on("ready", this.ready);
 		this.client.on("message", this.message);
@@ -52,8 +56,8 @@ export default class DiscordApp {
 
 			const exec = params[0].toLowerCase();
 			const args = params.splice(1);
-			if (exec in method)	method[exec].call(this, message, args);
-			else	message.channel.send("=ㄷㅇ(or 도움) 으로 명령어 체크 바람");
+			
+			this.method.call(exec, message, args);
 		}
 	}
 
