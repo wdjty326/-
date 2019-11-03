@@ -9,7 +9,9 @@ export default function(this: discordapp, message: discordjs.Message) {
 	if (this.validate(id)) {
 		const obj = this.connection(id);
 
-		if(obj.connection.dispatcher) obj.connection.dispatcher.end();
+		obj.checkVoiceMember && clearInterval(obj.checkVoiceMember);
+		obj.checkPlayingAudio && clearInterval(obj.checkPlayingAudio)
+		obj.connection.dispatcher && obj.connection.dispatcher.end();
 		obj.connection.disconnect();
 
 		this.delete(id);

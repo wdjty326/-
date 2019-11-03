@@ -1,5 +1,6 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
+import disconnect from "./disconnect";
 
 /** bot in voicechannel */
 export default function(this: discordapp, message: discordjs.Message, callback?: () => void) {
@@ -14,11 +15,21 @@ export default function(this: discordapp, message: discordjs.Message, callback?:
 			.join()
 			.then((connection) => {
 				if (connection.status === 0) {
+					const checkVoiceMember = setInterval(() => {
+						if (voiceChannel.members.size === 1) disconnect.call(this, message);
+					}, 10000);
+
+					const checkPlayingAudio = setInterval(() => {
+						if(!this.connection(id).playingAudio) disconnect.call(this, message);	
+					}, 600000);
 					this.connectionMapper.set(id, {
 						connection,
 						arrayQueueStack: [],
 						playingAudio: null,
-						isQueueRepeat: false
+						isQueueRepeat: false,
+
+						checkVoiceMember,
+						checkPlayingAudio
 					});
 
 					if (typeof callback === "function") callback();

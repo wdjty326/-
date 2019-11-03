@@ -14,4 +14,7 @@ export default interface DiscordVoiceInfomation {
 
 	/** queue loop playing ture/false */
 	isQueueRepeat: boolean;
+
+	checkVoiceMember: NodeJS.Timeout;
+	checkPlayingAudio: NodeJS.Timeout;
 }

@@ -46,6 +46,8 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 						}
 					});
 				}, 1000);
+			} else {
+				obj.playingAudio = null;
 			}
 		}
 	}).on("error", (err) => {

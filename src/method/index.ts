@@ -45,6 +45,7 @@ export default class method {
 			"ㅇㅈ": m_connect,
 			"입장": m_connect,
 
+			"disconnect": m_disconnect, 
 			"ㅌㅈ": m_disconnect,
 			"퇴장": m_disconnect,
 
