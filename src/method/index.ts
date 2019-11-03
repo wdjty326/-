@@ -77,6 +77,6 @@ export default class method {
 
 	public call(command: string, message: Message, args?: string[]): void {
 		if (this.commandBox[command]) this.commandBox[command](message, args);
-		else	message.channel.send("[=ㄷㅇ(or 도움) 으로 명령어 체크 바람]");
+		else	message.channel.send("=ㄷㅇ(or 도움) 으로 명령어 체크 바람");
 	}
 }
