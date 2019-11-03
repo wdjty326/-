@@ -48,7 +48,10 @@ export default class DiscordApp {
 	message(message: discordjs.Message) {
 		/** 텍스트 내용 */
 		const { content } = message;
-		if (content.startsWith(this.commandLine)) {
+		if (
+			content.startsWith(this.commandLine)
+			&& this.client.user.id != message.member.id
+		) {
 			/** 시작명령어 */
 			const params = content
 				.substr(this.commandLine.length)
