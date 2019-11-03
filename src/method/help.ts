@@ -6,12 +6,11 @@ import { MainGuideContent, DevGuideContent } from "../template";
 export default function(this: discordapp, message: discordjs.Message, args?: string[]) {
 	if (args) {
 		switch(args[0]) {
-			default:
 			case "dev":
 				message.channel.send(DevGuideContent);
 				break;
+			default:
+				message.channel.send(MainGuideContent);
 		}
-	} else {
-		message.channel.send(MainGuideContent);
 	}
 }
