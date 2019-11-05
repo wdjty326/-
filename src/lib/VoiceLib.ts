@@ -55,7 +55,7 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 		if (obj.isQueueRepeat) obj.isQueueRepeat = false;
 
 		if (dispatcher) {
-			if (dispatcher.stream) dispatcher.stream.destroy();
+			dispatcher.stream.destroy();
 			dispatcher.end();
 		}
 		console.log(err.message);

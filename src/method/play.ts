@@ -46,12 +46,9 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 			message.channel.send("검색결과임 " + link);
 			if (flag) {
 				flag = false;
+				const dispatcher = this.dispatcher(id);
 				const fileWriteStream = (title: string, link: string, filePath: string) => FileWriteStream(link, filePath).then((stream) => {
-					const dispatcher = this.dispatcher(id);
-					if (
-						!dispatcher
-						|| dispatcher.destroyed
-					) {
+					if (!dispatcher || dispatcher.destroyed) {
 						obj.playingAudio = {	title,	filePath	};
 						const size = getFileSize(filePath);
 
@@ -66,6 +63,10 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 					}
 				}).catch((err: Error) => {
 					message.channel.send(`[ERROR]${err.message}`);
+					if(dispatcher) {
+						dispatcher.stream.destroy();
+						dispatcher.end();
+					}
 				}).finally(() => {
 					if (AsyncQueueStack.length) {
 						const { title, link, filePath } = AsyncQueueStack.shift() as AsyncQueueType;
