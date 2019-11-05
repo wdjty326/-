@@ -17,7 +17,7 @@ export default function(this: discordapp, message: discordjs.Message, callback?:
 				if (connection.status === 0) {
 					const checkVoiceMember = setInterval(() => {
 						if (voiceChannel.members.size === 1) disconnect.call(this, message);
-					}, 10000);
+					}, 60000);
 
 					const checkPlayingAudio = setInterval(() => {
 						if(!this.connection(id).playingAudio) disconnect.call(this, message);	

@@ -11,7 +11,7 @@ export const InitialPlayOptions: StreamOptions = {
 	seek: 0,
 	volume: 1,
 	passes: 1,
-	bitrate: 22050
+	bitrate: 48000
 };
 
 /** 경로에 있는 파일을 재생합니다. */
@@ -26,7 +26,6 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 	connection.playStream(stream, option).on("end", () => {
 		// stream close
 		connection.dispatcher.stream.destroy();	
-
 		// loop
 		if (obj.isQueueRepeat) arrayQueueStack.push(playingAudio as AudioInfo);
 	
@@ -46,9 +45,9 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 						}
 					});
 				}, 1000);
-			} else {
-				obj.playingAudio = null;
 			}
+		} else {
+			obj.playingAudio = null;
 		}
 	}).on("error", (err) => {
 		const dispatcher = obj.connection.dispatcher;
@@ -98,6 +97,6 @@ const FfmpegAudio = (stream: Readable) => ffmpeg()
 	.withNoVideo()
 	.withAudioBitrate(96)
 	.withAudioChannels(2)
-	.withAudioFrequency(22050)
+	.withAudioFrequency(48000)
 	.withAudioQuality(5)
 	.outputFormat("mp3");
