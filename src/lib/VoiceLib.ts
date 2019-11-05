@@ -24,8 +24,7 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 		console.log("end stream");
 	});
 	connection.playStream(stream, option).on("end", () => {
-		// stream close
-		connection.dispatcher.stream.destroy();	
+		console.log("end playstream");
 		// loop
 		if (obj.isQueueRepeat) arrayQueueStack.push(playingAudio as AudioInfo);
 	
@@ -47,6 +46,7 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 				}, 1000);
 			}
 		} else {
+			connection.dispatcher.stream.destroy();
 			obj.playingAudio = null;
 		}
 	}).on("error", (err) => {
