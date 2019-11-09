@@ -42,7 +42,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 				if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
 			});
 
-			const filePath = path.resolve(dirPath, `${v}.opus`);
+			const filePath = path.resolve(dirPath, `${v}.mp3`);
 			message.channel.send(this.localeContent["search"] + ":" + link);
 			if (flag) {
 				flag = false;

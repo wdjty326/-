@@ -7,7 +7,7 @@ import fs from "fs";
 import { AudioInfo } from "../define/CommonType";
 import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
 
-export const PlayOptions = (size = 0, byte = 16000): StreamOptions => {
+export const PlayOptions = (size = 0, byte = 32000): StreamOptions => {
 	const passes = Math.round(size / byte);
 	return {
 		seek: 0,
@@ -79,11 +79,11 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 
 // ffmpeg audio setting function
 const FfmpegAudio = (stream: Readable) => ffmpeg()
-	.input(stream)
-	.withNoVideo()
-	.audioCodec("libopus")
-	.withAudioBitrate(96)
-	.withAudioChannels(2)
-	//	.withAudioFrequency(44100)
-	// .withAudioQuality(2)
-	.outputFormat("opus");
+.input(stream)
+.audioCodec("libmp3lame")
+.withNoVideo()
+.withAudioBitrate(96)
+.withAudioChannels(2)
+.withAudioFrequency(44100)
+.withAudioQuality(5)
+.outputFormat("mp3");
