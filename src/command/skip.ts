@@ -5,8 +5,6 @@ import { IsNaturalNumber } from "../lib/IntegerLib";
 
 import { AudioInfo } from "../define/CommonType";
 
-import { NaturalNumberException } from "../template";
-
 export default function(this: discordapp, message: discordjs.Message, args: string[]) {
 	const id = message.guild.id;
 
@@ -22,7 +20,7 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 					if (mapper.isQueueRepeat) mapper.arrayQueueStack.push(Output as AudioInfo);
 				}
 			} else {
-				message.channel.send(NaturalNumberException);
+				message.channel.send(this.localeContent["errorInputNaturalNumber"]);
 				return;
 			}
 		}

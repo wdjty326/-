@@ -32,14 +32,15 @@ export default function(this: discordapp, message: discordjs.Message, callback?:
 						checkPlayingAudio
 					});
 
+					message.channel.send(this.localeContent["connectionMsg"]);	
 					if (typeof callback === "function") callback();
 				}
 			})
 			.catch((err) => message.reply(err.toString()));		
 		} else {
-			message.channel.send("나 누가이미불러서 바쁨 ㅅㄱ");	
+			message.channel.send(this.localeContent["errorAwaitVoiceChannel"]);	
 		}
 	} else {
-		message.channel.send("님 어딨음? 음성방에 없는데??");
+		message.channel.send(this.localeContent["errorNotFountVoiceChannel"]);
 	}
 };

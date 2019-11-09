@@ -7,9 +7,8 @@ import fs from "fs";
 import { AudioInfo } from "../define/CommonType";
 import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
 
-export const PlayOptions = (size = 0, byte = 1024): StreamOptions => {
+export const PlayOptions = (size = 0, byte = 4096): StreamOptions => {
 	const passes = Math.round(size / byte);
-	console.log("@size:", size, "@passes:", passes);
 	return {
 		seek: 0,
 		volume: 1,
@@ -68,9 +67,7 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 				else	reject(err);
 			})
 			.on("end", () => {
-				resolve(
-					fs.createReadStream(filePath)
-				);
+				resolve(fs.createReadStream(filePath));
 			})
 			.pipe(fs.createWriteStream(filePath));
 		} catch (err) {

@@ -43,11 +43,12 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 			});
 
 			const filePath = path.resolve(dirPath, `${v}.opus`);
-			message.channel.send(link);
+			message.channel.send(this.localeContent["search"] + ":" + link);
 			if (flag) {
 				flag = false;
 				const dispatcher = this.dispatcher(id);
 				const fileWriteStream = (title: string, link: string, filePath: string) => FileWriteStream(link, filePath).then((stream) => {
+					console.log("fileWriteStream_" + id + "_" + title + "_" + getFileSize(filePath));
 					if (!dispatcher || dispatcher.destroyed) {
 						obj.playingAudio = {	title,	filePath	};
 

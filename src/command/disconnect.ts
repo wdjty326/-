@@ -16,5 +16,7 @@ export default function(this: discordapp, message: discordjs.Message) {
 		obj.connection.disconnect();
 
 		this.delete(id);
+
+		message.channel.send(this.localeContent["disconnectMsg"])
 	}
 };

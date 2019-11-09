@@ -9,10 +9,10 @@ export default function(this: discordapp, message: discordjs.Message): void {
 		const obj = this.connection(id);
 		if (obj.isQueueRepeat) {
 			obj.isQueueRepeat = false;
-			message.channel.send("루프 정지");
+			message.channel.send(this.localeContent["startQueue"]);
 		} else {
 			obj.isQueueRepeat = true;
-			message.channel.send("루프 가동");
+			message.channel.send(this.localeContent["stopQueue"]);
 		}
 	}
 };

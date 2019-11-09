@@ -16,3 +16,5 @@ export type AsyncQueueType = {
 	link: string;
 	filePath: string;
 };
+
+export type LocaleType = "ko";

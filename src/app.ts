@@ -1,7 +1,9 @@
 import discordjs, { StreamDispatcher } from "discord.js";
-import method from "./method";
+import command from "./command";
 
+import Locale from "locale";
 import DiscordVoiceInfomation from "define/DiscordVoiceInterface";
+import { LocaleType } from "define/CommonType";
 
 /** discord main class. */
 export default class DiscordApp {
@@ -14,11 +16,16 @@ export default class DiscordApp {
 	/** google api key */
 	protected apikey: string = "";
 
-	/** method */
-	protected mtd: method;
+	/** command object */
+	protected command: command;
 
 	/** command line startwith */
 	private readonly commandLine = "=";
+
+	private localeCode: LocaleType = "ko";
+	protected localeContent: {
+		[key: string]: string
+	};
 
 	constructor(token: string, apikey: string) {	
 		this.ready = this.ready.bind(this);
@@ -31,7 +38,8 @@ export default class DiscordApp {
 
 		this.apikey = apikey;
 		
-		this.mtd = new method(this);
+		this.command = new command(this);
+		this.localeContent = Locale(this.localeCode);
 
 		this.client.on("ready", this.ready);
 		this.client.on("message", this.message);
@@ -60,7 +68,7 @@ export default class DiscordApp {
 			const exec = params[0].toLowerCase();
 			const args = params.splice(1);
 
-			this.mtd.call(exec, message, args);
+			this.command.call(exec, message, args);
 		}
 	}
 

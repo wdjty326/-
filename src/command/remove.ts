@@ -3,8 +3,6 @@ import discordapp from "../app";
 
 import { IsNaturalNumber } from "../lib/IntegerLib";
 
-import { NaturalNumberException, RemoveMethodGuideContent } from "../template";
-
 export default function(this: discordapp, message: discordjs.Message, args: string[]): void {
 	// call message server id
 	const id = message.guild.id;
@@ -16,13 +14,11 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 			const count = (args.length === 2) ? parseInt(args[1], 10) : 1;
 			
 			if (!IsNaturalNumber(start) || !IsNaturalNumber(count)) {
-				message.channel.send(NaturalNumberException);
+				message.channel.send(this.localeContent["errorInputNaturalNumber"]);
 				return;
 			}
 
 			obj.arrayQueueStack.splice(start - 1, count);
-		} else {
-			message.channel.send(RemoveMethodGuideContent);
 		}
 	}
 };

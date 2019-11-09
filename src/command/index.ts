@@ -15,10 +15,10 @@ import skip from "./skip";
 import clean from "./clean";
 import loop from "./loop";
 import remove from "./remove";
-import DiscordApp from "app";
+import DiscordApp from "../app";
 
 
-export default class method {
+export default class command {
 	private commandBox: {	[key: string]: Function;	};
 
 	constructor(instance: DiscordApp) {
