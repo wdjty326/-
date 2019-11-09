@@ -81,7 +81,7 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 const FfmpegAudio = (stream: Readable) => ffmpeg()
 	.input(stream)
 	.withNoVideo()
-	.audioCodec("libvorbis")
+	.audioCodec("libopus")
 	.withAudioBitrate(96)
 	.withAudioChannels(2)
 	.withAudioFrequency(44100)
