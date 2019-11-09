@@ -14,7 +14,7 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 			const count = (args.length === 2) ? parseInt(args[1], 10) : 1;
 			
 			if (!IsNaturalNumber(start) || !IsNaturalNumber(count)) {
-				message.channel.send(this.localeContent["errorInputNaturalNumber"]);
+				message.channel.send(this.template["errorInputNaturalNumber"]);
 				return;
 			}
 

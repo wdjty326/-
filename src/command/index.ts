@@ -17,8 +17,7 @@ import loop from "./loop";
 import remove from "./remove";
 import DiscordApp from "../app";
 
-import setLocale from "./setLocale";
-import { LocaleContentType } from "define/CommonType";
+import template from "../locale/template";
 
 export default class command {
 	private commandBox: {	[key: string]: Function;	} = {};
@@ -36,60 +35,8 @@ export default class command {
 	private loop: Function;
 	private remove: Function;
 
-	private setLocale: Function;
-	
-	private locale: LocaleContentType = {
-		commandBox: {}
-	};
-
-	setLocaleContent(instance: DiscordApp) {
-		this.locale = instance.getLocaleContent();
-		this.commandBox = {
-			[this.locale.commandBox["ping_type1"]]: this.ping,
-			[this.locale.commandBox["ping_type2"]]: this.ping,
-
-			[this.locale.commandBox["help_type1"]]: this.help,
-			[this.locale.commandBox["help_type2"]]: this.help,
-
-			[this.locale.commandBox["connect_type1"]]: this.connect,
-			[this.locale.commandBox["connect_type2"]]: this.connect,
-
-			[this.locale.commandBox["disconnect_type1"]]: this.disconnect,
-			[this.locale.commandBox["disconnect_type2"]]: this.disconnect,
-
-			[this.locale.commandBox["play_type1"]]: this.play,
-			[this.locale.commandBox["play_type2"]]: this.play,
-
-			[this.locale.commandBox["playlist_type1"]]: this.playlist,
-			[this.locale.commandBox["playlist_type2"]]: this.playlist,
-
-			[this.locale.commandBox["clean_type1"]]: this.clean,
-			[this.locale.commandBox["clean_type2"]]: this.clean,
-
-			[this.locale.commandBox["pause_type1"]]: this.pause,
-			[this.locale.commandBox["pause_type2"]]: this.pause,
-
-			[this.locale.commandBox["resume_type1"]]: this.resume,
-			[this.locale.commandBox["resume_type2"]]: this.resume,
-
-			[this.locale.commandBox["skip_type1"]]: this.skip,
-			[this.locale.commandBox["skip_type2"]]: this.skip,
-
-			[this.locale.commandBox["loop_type1"]]: this.loop,
-			[this.locale.commandBox["loop_type2"]]: this.loop,
-
-			[this.locale.commandBox["remove_type1"]]: this.remove,
-			[this.locale.commandBox["remove_type2"]]: this.remove,
-
-			setLocale: this.setLocale
-		};
-	}
-
 	constructor(instance: DiscordApp) {
-		this.setLocaleContent = this.setLocaleContent.bind(this);
 		this.call = this.call.bind(this);
-
-		this.setLocale = setLocale.bind(instance);
 
 		this.ping = ping.bind(instance);
 		this.help = help.bind(instance);
@@ -104,11 +51,47 @@ export default class command {
 		this.loop = loop.bind(instance);
 		this.remove = remove.bind(instance);
 
-		this.setLocaleContent(instance);
+		this.commandBox = {
+			[template.commandBox["ping_type1"]]: this.ping,
+			[template.commandBox["ping_type2"]]: this.ping,
+
+			[template.commandBox["help_type1"]]: this.help,
+			[template.commandBox["help_type2"]]: this.help,
+
+			[template.commandBox["connect_type1"]]: this.connect,
+			[template.commandBox["connect_type2"]]: this.connect,
+
+			[template.commandBox["disconnect_type1"]]: this.disconnect,
+			[template.commandBox["disconnect_type2"]]: this.disconnect,
+
+			[template.commandBox["play_type1"]]: this.play,
+			[template.commandBox["play_type2"]]: this.play,
+
+			[template.commandBox["playlist_type1"]]: this.playlist,
+			[template.commandBox["playlist_type2"]]: this.playlist,
+
+			[template.commandBox["clean_type1"]]: this.clean,
+			[template.commandBox["clean_type2"]]: this.clean,
+
+			[template.commandBox["pause_type1"]]: this.pause,
+			[template.commandBox["pause_type2"]]: this.pause,
+
+			[template.commandBox["resume_type1"]]: this.resume,
+			[template.commandBox["resume_type2"]]: this.resume,
+
+			[template.commandBox["skip_type1"]]: this.skip,
+			[template.commandBox["skip_type2"]]: this.skip,
+
+			[template.commandBox["loop_type1"]]: this.loop,
+			[template.commandBox["loop_type2"]]: this.loop,
+
+			[template.commandBox["remove_type1"]]: this.remove,
+			[template.commandBox["remove_type2"]]: this.remove
+		};
 	}
 
 	public call(command: string, message: Message, args?: string[]): void {
 		if (this.commandBox[command]) this.commandBox[command](message, args);
-		else	message.channel.send(this.locale["helpguide"]);
+		else	message.channel.send(template["helpguide"]);
 	}
 }

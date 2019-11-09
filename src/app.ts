@@ -1,10 +1,9 @@
 import discordjs, { StreamDispatcher } from "discord.js";
 
 import command from "./command";
-import locale from "./locale";
+import template from "./locale/template";
 
 import DiscordVoiceInfomation from "define/DiscordVoiceInterface";
-import { LocaleType, LocaleContentType } from "define/CommonType";
 
 /** discord main class. */
 export default class DiscordApp {
@@ -22,9 +21,7 @@ export default class DiscordApp {
 
 	/** command line startwith */
 	private readonly commandLine = "=";
-
-	private localeCode: LocaleType = "ko";
-	protected localeContent: LocaleContentType;
+	protected template = template;
 
 	constructor(token: string, apikey: string) {	
 		this.ready = this.ready.bind(this);
@@ -37,7 +34,6 @@ export default class DiscordApp {
 
 		this.apikey = apikey;
 		
-		this.localeContent = locale(this.localeCode);
 		this.command = new command(this);
 		
 		this.client.on("ready", this.ready);
@@ -89,16 +85,5 @@ export default class DiscordApp {
 	/** */
 	dispatcher(id: string): StreamDispatcher {
 		return this.connection(id).connection.dispatcher;
-	}
-
-	setLocale(localeCode: LocaleType) {
-		this.localeCode = localeCode;
-		this.localeContent = locale(this.localeCode);
-
-		this.command.setLocaleContent(this);
-	}
-
-	getLocaleContent() {
-		return this.localeContent;
 	}
 }

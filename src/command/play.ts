@@ -42,14 +42,14 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 				if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
 			});
 
-			const filePath = path.resolve(dirPath, `${v}.mp3`);
-			message.channel.send(this.localeContent["search"] + ":" + link);
+			const filePath = path.resolve(dirPath, `${v}.opus`);
+			message.channel.send(this.template["search"] + ":" + link);
 			if (flag) {
 				flag = false;
 				const dispatcher = this.dispatcher(id);
 				const fileWriteStream = (title: string, link: string, filePath: string) => FileWriteStream(link, filePath).then((stream) => {
-					console.log("fileWriteStream_" + id + "_" + title + "_" + getFileSize(filePath));
-					if (!dispatcher || dispatcher.destroyed) {
+					console.log(id + "," + title + "," + getFileSize(filePath));
+					if (!obj.playingAudio) {
 						obj.playingAudio = {	title,	filePath	};
 
 						const size = getFileSize(filePath);

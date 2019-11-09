@@ -20,7 +20,7 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 					if (mapper.isQueueRepeat) mapper.arrayQueueStack.push(Output as AudioInfo);
 				}
 			} else {
-				message.channel.send(this.localeContent["errorInputNaturalNumber"]);
+				message.channel.send(this.template["errorInputNaturalNumber"]);
 				return;
 			}
 		}

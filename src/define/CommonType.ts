@@ -16,12 +16,3 @@ export type AsyncQueueType = {
 	link: string;
 	filePath: string;
 };
-
-export type LocaleContentType = {
-	[key: string]: any;
-	commandBox: {
-		[key: string]: string;
-	};
-};
-
-export type LocaleType = "ko" | "en";

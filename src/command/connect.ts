@@ -32,15 +32,15 @@ export default function(this: discordapp, message: discordjs.Message, callback?:
 						checkPlayingAudio
 					});
 
-					message.channel.send(this.localeContent["connectionMsg"]);	
+					message.channel.send(this.template["connectionMsg"]);	
 					if (typeof callback === "function") callback();
 				}
 			})
-			.catch((err) => message.reply(err.toString()));		
+			.catch((err) => message.channel.send(err.toString()));		
 		} else {
-			message.channel.send(this.localeContent["errorAwaitVoiceChannel"]);	
+			message.channel.send(this.template["errorAwaitVoiceChannel"]);	
 		}
 	} else {
-		message.channel.send(this.localeContent["errorNotFountVoiceChannel"]);
+		message.channel.send(this.template["errorNotFountVoiceChannel"]);
 	}
 };

@@ -10,11 +10,11 @@ export default function(this: discordapp, message: discordjs.Message): void {
 		const obj = this.connection(id);
 		const currentTitle = (obj.playingAudio) ? obj.playingAudio.title : "";
 		message.channel.send(
-			"*" + this.localeContent["playingAudio"] + "\n"
+			"*" + this.template["playingAudio"] + "\n"
 			+ "-"
 			+ currentTitle
 			+ "\n"
-			+ "*" + this.localeContent["waitingList"] + "\n" 
+			+ "*" + this.template["waitingList"] + "\n" 
 			+ obj.arrayQueueStack.map((Output, Index) => `${Index + 1}. ${Output.title}`).join("\n")
 		);
 	}

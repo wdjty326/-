@@ -7,13 +7,13 @@ import fs from "fs";
 import { AudioInfo } from "../define/CommonType";
 import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
 
-export const PlayOptions = (size = 0, byte = 32000): StreamOptions => {
+export const PlayOptions = (size = 0, byte = 16000): StreamOptions => {
 	const passes = Math.round(size / byte);
 	return {
 		seek: 0,
-		volume: 1,
+		volume: 0.5,
 		passes: passes ? passes : 1,
-		bitrate: 44100
+		bitrate: 24000
 	};
 } ;
 
@@ -23,29 +23,30 @@ export const PlayFile = (obj: DiscordVoiceInfomation, path: string, option: Stre
 /** stream정보를 재생합니다. */
 export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option: StreamOptions = PlayOptions()) => {
 	const { connection, arrayQueueStack, playingAudio } = obj;
-	connection.playStream(stream, option).on("end", () => {
-		console.log("end playstream");
-		// loop
-		if (obj.isQueueRepeat) arrayQueueStack.push(playingAudio as AudioInfo);
-	
-		if (arrayQueueStack.length) {
-			const Output = arrayQueueStack.shift();
-			if (Output) {
-				const stream = fs.createReadStream(Output.filePath);
-				obj.playingAudio = Output;
-				PlayStream(obj, stream, PlayOptions(getFileSize(Output.filePath)));
+	if (stream.readable)
+		connection.playStream(stream, option).on("end", () => {
+			console.log("end playstream");
+			// loop
+			if (obj.isQueueRepeat) arrayQueueStack.push(playingAudio as AudioInfo);
+		
+			if (arrayQueueStack.length) {
+				const Output = arrayQueueStack.shift();
+				if (Output) {
+					const stream = fs.createReadStream(Output.filePath);
+					obj.playingAudio = Output;
+					PlayStream(obj, stream, PlayOptions(getFileSize(Output.filePath)));
+				}
+			} else {
+				obj.playingAudio = null;
 			}
-		} else {
-			obj.playingAudio = null;
-		}
-	}).on("error", (err) => {
-		const dispatcher = obj.connection.dispatcher;
-		// loop forced initialization
-		if (obj.isQueueRepeat) obj.isQueueRepeat = false;
+		}).on("error", (err) => {
+			const dispatcher = obj.connection.dispatcher;
+			// loop forced initialization
+			if (obj.isQueueRepeat) obj.isQueueRepeat = false;
 
-		if (dispatcher)	dispatcher.end();
-		console.log(err.message);
-	});
+			if (dispatcher)	dispatcher.end();
+			console.log(err.message);
+		});
 }
 
 export const getFileSize = (filePath: string) => {
@@ -80,10 +81,10 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 // ffmpeg audio setting function
 const FfmpegAudio = (stream: Readable) => ffmpeg()
 .input(stream)
-.audioCodec("libmp3lame")
+.audioCodec("libopus")
 .withNoVideo()
-.withAudioBitrate(96)
+.withAudioBitrate(64)
 .withAudioChannels(2)
-.withAudioFrequency(44100)
-.withAudioQuality(5)
-.outputFormat("mp3");
+.withAudioFrequency(24000)
+//.withAudioQuality(5)
+.outputFormat("opus");
