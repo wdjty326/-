@@ -42,7 +42,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 				if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
 			});
 
-			const filePath = path.resolve(dirPath, `${v}.mka`);
+			const filePath = path.resolve(dirPath, `${v}.ogg`);
 			message.channel.send(this.localeContent["search"] + ":" + link);
 			if (flag) {
 				flag = false;
