@@ -13,7 +13,7 @@ export const PlayOptions = (size = 0, byte = 4096): StreamOptions => {
 		seek: 0,
 		volume: 1,
 		passes: passes ? passes : 1,
-		bitrate: 44100
+		bitrate: 48000
 	};
 } ;
 
@@ -84,6 +84,6 @@ const FfmpegAudio = (stream: Readable) => ffmpeg()
 	.audioCodec("libopus")
 	.withAudioBitrate(96)
 	.withAudioChannels(2)
-	.withAudioFrequency(44100)
+	.withAudioFrequency(48000)
 	.withAudioQuality(5)
 	.outputFormat("opus");
