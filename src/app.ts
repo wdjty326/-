@@ -1,7 +1,8 @@
 import discordjs, { StreamDispatcher } from "discord.js";
-import command from "./command";
 
-import Locale from "locale";
+import command from "./command";
+import locale from "./locale";
+
 import DiscordVoiceInfomation from "define/DiscordVoiceInterface";
 import { LocaleType } from "define/CommonType";
 
@@ -39,7 +40,7 @@ export default class DiscordApp {
 		this.apikey = apikey;
 		
 		this.command = new command(this);
-		this.localeContent = Locale(this.localeCode);
+		this.localeContent = locale(this.localeCode);
 
 		this.client.on("ready", this.ready);
 		this.client.on("message", this.message);
