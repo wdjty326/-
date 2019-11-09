@@ -16,67 +16,91 @@ import clean from "./clean";
 import loop from "./loop";
 import remove from "./remove";
 import DiscordApp from "../app";
-
+import { LocaleContentType } from "define/CommonType";
 
 export default class command {
-	private commandBox: {	[key: string]: Function;	};
+	private commandBox: {	[key: string]: Function;	} = {};
+
+	private ping: Function;
+	private help: Function;
+	private connect: Function;
+	private disconnect: Function;
+	private play: Function;
+	private playlist: Function;
+	private clean: Function;
+	private pause: Function;
+	private resume: Function;
+	private skip: Function;
+	private loop: Function;
+	private remove: Function;
+	
+	private locale: LocaleContentType = {
+		commandBox: {}
+	};
+
+	setLocaleContent(instance: DiscordApp) {
+		this.locale = instance.getLocaleContent();
+		this.commandBox = {
+			[this.locale.commandBox["ping_type1"]]: this.ping,
+			[this.locale.commandBox["ping_type2"]]: this.ping,
+
+			[this.locale.commandBox["help_type1"]]: this.help,
+			[this.locale.commandBox["help_type2"]]: this.help,
+
+			[this.locale.commandBox["connect_type1"]]: this.connect,
+			[this.locale.commandBox["connect_type2"]]: this.connect,
+
+			[this.locale.commandBox["disconnect_type1"]]: this.disconnect,
+			[this.locale.commandBox["disconnect_type2"]]: this.disconnect,
+
+			[this.locale.commandBox["play_type1"]]: this.play,
+			[this.locale.commandBox["play_type2"]]: this.play,
+
+			[this.locale.commandBox["playlist_type1"]]: this.playlist,
+			[this.locale.commandBox["playlist_type2"]]: this.playlist,
+
+			[this.locale.commandBox["clean_type1"]]: this.clean,
+			[this.locale.commandBox["clean_type2"]]: this.clean,
+
+			[this.locale.commandBox["pause_type1"]]: this.pause,
+			[this.locale.commandBox["pause_type2"]]: this.pause,
+
+			[this.locale.commandBox["resume_type1"]]: this.resume,
+			[this.locale.commandBox["resume_type2"]]: this.resume,
+
+			[this.locale.commandBox["skip_type1"]]: this.skip,
+			[this.locale.commandBox["skip_type2"]]: this.skip,
+
+			[this.locale.commandBox["loop_type1"]]: this.loop,
+			[this.locale.commandBox["loop_type2"]]: this.loop,
+
+			[this.locale.commandBox["remove_type1"]]: this.remove,
+			[this.locale.commandBox["remove_type2"]]: this.remove
+		};
+	}
 
 	constructor(instance: DiscordApp) {
-		const m_ping = ping.bind(instance);
-		const m_help = help.bind(instance);
-		const m_connect = connect.bind(instance);
-		const m_disconnect = disconnect.bind(instance);
-		const m_play = play.bind(instance);
-		const m_playlist = playlist.bind(instance);
-		const m_clean = clean.bind(instance);
-		const m_pause = pause.bind(instance);
-		const m_resume = resume.bind(instance);
-		const m_skip = skip.bind(instance);
-		const m_loop = loop.bind(instance);
-		const m_remove = remove.bind(instance);
+		this.setLocaleContent = this.setLocaleContent.bind(this);
+		this.call = this.call.bind(this);
 
-		this.commandBox = {
-			"ㅍ": m_ping,
-			"핑": m_ping,
+		this.ping = ping.bind(instance);
+		this.help = help.bind(instance);
+		this.connect = connect.bind(instance);
+		this.disconnect = disconnect.bind(instance);
+		this.play = play.bind(instance);
+		this.playlist = playlist.bind(instance);
+		this.clean = clean.bind(instance);
+		this.pause = pause.bind(instance);
+		this.resume = resume.bind(instance);
+		this.skip = skip.bind(instance);
+		this.loop = loop.bind(instance);
+		this.remove = remove.bind(instance);
 
-			"ㄷㅇ": m_help,
-			"도움": m_help,
-
-			"ㅇㅈ": m_connect,
-			"입장": m_connect,
-
-			"disconnect": m_disconnect, 
-			"ㅌㅈ": m_disconnect,
-			"퇴장": m_disconnect,
-
-			"ㄱ": m_play,
-			"고": m_play,
-
-			"ㅁㄹ": m_playlist,
-			"목록": m_playlist,
-
-			"ㅋㄹ": m_clean,
-			"클린": m_clean,
-
-			"ㅉ": m_pause,
-			"정지": m_pause,
-
-			"ㄷㅅ": m_resume,
-			"다시": m_resume,
-
-			"ㅅㅋ": m_skip,
-			"스킵": m_skip,
-
-			"ㄹㅍ": m_loop,
-			"루프": m_loop,
-
-			"ㅈㄱ": m_remove,
-			"제거": m_remove
-		};
+		this.setLocaleContent(instance);
 	}
 
 	public call(command: string, message: Message, args?: string[]): void {
 		if (this.commandBox[command]) this.commandBox[command](message, args);
-		else	message.channel.send("=ㄷㅇ(or 도움) 으로 명령어 체크 바람");
+		else	message.channel.send(this.locale["helpguide"]);
 	}
 }

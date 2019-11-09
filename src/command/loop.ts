@@ -9,10 +9,10 @@ export default function(this: discordapp, message: discordjs.Message): void {
 		const obj = this.connection(id);
 		if (obj.isQueueRepeat) {
 			obj.isQueueRepeat = false;
-			message.channel.send(this.localeContent["startQueue"]);
+			message.channel.send(this.localeContent["stopQueue"]);
 		} else {
 			obj.isQueueRepeat = true;
-			message.channel.send(this.localeContent["stopQueue"]);
+			message.channel.send(this.localeContent["startQueue"]);
 		}
 	}
 };

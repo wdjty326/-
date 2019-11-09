@@ -39,7 +39,47 @@ export default {
     "connectionMsg": "하-위",
     "disconnectMsg": "바-위",
 
+    "helpguide": "=ㄷㅇ(or 도움) 으로 명령어 체크 바람",
+
     "errorInputNaturalNumber": "0 이상의 숫자로 부탁함.",
     "errorNotFountVoiceChannel": "음성방에 들어가고 부르셈.",
-    "errorAwaitVoiceChannel": "바빠 나중에 불러.",  
+    "errorAwaitVoiceChannel": "바빠 나중에 불러.",
+
+    commandBox: {
+        "ping_type1": "ㅍ",
+        "ping_type2": "핑",
+        
+        "help_type1": "ㄷㅇ",
+        "help_type2": "도움",
+
+        "connect_type1": "ㅇㅈ",
+        "connect_type2": "입장",
+        
+        "disconnect_type1": "ㅌㅈ",
+        "disconnect_type2": "퇴장",
+
+        "play_type1": "ㄱ",
+        "play_type2": "고",
+
+        "playlist_type1": "ㅁㄹ",
+        "playlist_type2": "목록",
+        
+        "clean_type1": "ㅋㄹ",
+        "clean_type2": "클린",
+        
+        "pause_type1": "ㅈㅈ",
+        "pause_type2": "정지",
+
+        "resume_type1": "ㄷㅅ",
+        "resume_type2": "다시",
+
+        "skip_type1": "ㅅㅋ",
+        "skip_type2": "스킵",
+        
+        "loop_type1": "ㄹㅍ",
+        "loop_type2": "루프",
+
+        "remove_type1": "ㅈㄱ",
+        "remove_type2": "제거"
+    }
 };
