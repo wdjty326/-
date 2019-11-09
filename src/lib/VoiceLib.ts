@@ -21,7 +21,7 @@ export const PlayFile = (obj: DiscordVoiceInfomation, path: string, option: Stre
 export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option: StreamOptions = InitialPlayOptions) => {
 	const { connection, arrayQueueStack, playingAudio } = obj;
 	stream.on("end", () => {
-		console.log("end stream");
+		console.log("end stream", stream.destroyed);
 	});
 	connection.playStream(stream, option).on("end", () => {
 		console.log("end playstream");
@@ -34,19 +34,18 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 				// 1 second delay
 				setTimeout(() => {
 					const stream = fs.createReadStream(Output.filePath);
-					const size = getFileSize(Output.filePath);
+					const passes = Math.round(getFileSize(Output.filePath) / 4096);
 
 					obj.playingAudio = Output
 					PlayStream(obj, stream, {
 						...option,
 						...{
-							passes: Math.round(size / 2048)
+							passes: passes ? passes : 1
 						}
 					});
 				}, 1000);
 			}
 		} else {
-			connection.dispatcher.stream.destroy();
 			obj.playingAudio = null;
 		}
 	}).on("error", (err) => {
@@ -54,15 +53,15 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 		// loop forced initialization
 		if (obj.isQueueRepeat) obj.isQueueRepeat = false;
 
-		if (dispatcher) {
-			dispatcher.stream.destroy();
-			dispatcher.end();
-		}
+		if (dispatcher)	dispatcher.end();
 		console.log(err.message);
 	});
 }
 
-export const getFileSize = (filePath: string) => fs.statSync(filePath).size;
+export const getFileSize = (filePath: string) => {
+	const stat = fs.statSync(filePath);
+	return stat.isFile() ? stat.size : 0;
+};
 
 // youtube link for audio type save
 export const FileWriteStream = (link: string, filePath: string) => new Promise<Readable>((resolve, reject) => {
