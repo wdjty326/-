@@ -7,7 +7,7 @@ import fs from "fs";
 import { AudioInfo } from "../define/CommonType";
 import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
 
-export const PlayOptions = (size = 0, byte = 4096): StreamOptions => {
+export const PlayOptions = (size = 0, byte = 16000): StreamOptions => {
 	const passes = Math.round(size / byte);
 	return {
 		seek: 0,
