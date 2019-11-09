@@ -7,18 +7,22 @@ import fs from "fs";
 import { AudioInfo } from "../define/CommonType";
 import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
 
-export const InitialPlayOptions: StreamOptions = {
-	seek: 0,
-	volume: 1,
-	passes: 1,
-	bitrate: 44100
-};
+export const PlayOptions = (size = 0, byte = 1024): StreamOptions => {
+	const passes = Math.round(size / byte);
+	console.log("@size:", size, "@passes:", passes);
+	return {
+		seek: 0,
+		volume: 1,
+		passes: passes ? passes : 1,
+		bitrate: 44100
+	};
+} ;
 
 /** 경로에 있는 파일을 재생합니다. */
-export const PlayFile = (obj: DiscordVoiceInfomation, path: string, option: StreamOptions = InitialPlayOptions) => PlayStream(obj, fs.createReadStream(path), option);
+export const PlayFile = (obj: DiscordVoiceInfomation, path: string, option: StreamOptions = PlayOptions()) => PlayStream(obj, fs.createReadStream(path), option);
 
 /** stream정보를 재생합니다. */
-export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option: StreamOptions = InitialPlayOptions) => {
+export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option: StreamOptions = PlayOptions()) => {
 	const { connection, arrayQueueStack, playingAudio } = obj;
 	connection.playStream(stream, option).on("end", () => {
 		console.log("end playstream");
@@ -29,13 +33,8 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 			const Output = arrayQueueStack.shift();
 			if (Output) {
 				const stream = fs.createReadStream(Output.filePath);
-				const passes = Math.round(getFileSize(Output.filePath) / 4096);
-
 				obj.playingAudio = Output;
-
-				// change passes
-				option.passes = passes;
-				PlayStream(obj, stream, option);
+				PlayStream(obj, stream, PlayOptions(getFileSize(Output.filePath)));
 			}
 		} else {
 			obj.playingAudio = null;

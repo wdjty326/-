@@ -9,7 +9,7 @@ import {
 	PlayStream,
 	FileWriteStream,
 	getFileSize,
-	InitialPlayOptions
+	PlayOptions
 } from "../lib/VoiceLib";
 import { getURLParameter } from "../lib/StringLib";
 
@@ -50,23 +50,15 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 				const fileWriteStream = (title: string, link: string, filePath: string) => FileWriteStream(link, filePath).then((stream) => {
 					if (!dispatcher || dispatcher.destroyed) {
 						obj.playingAudio = {	title,	filePath	};
-						const size = getFileSize(filePath);
 
-						PlayStream(obj, stream, {
-							...InitialPlayOptions,
-							...{
-								passes: Math.round(size / 4096)
-							}
-						});
+						const size = getFileSize(filePath);
+						PlayStream(obj, stream, PlayOptions(size));
 					} else {
 						obj.arrayQueueStack.push({	title,	filePath	});										
 					}
 				}).catch((err: Error) => {
 					message.channel.send(`[ERROR]${err.message}`);
-					if(dispatcher) {
-						dispatcher.stream.destroy();
-						dispatcher.end();
-					}
+					if(dispatcher) dispatcher.end();
 				}).finally(() => {
 					if (AsyncQueueStack.length) {
 						const { title, link, filePath } = AsyncQueueStack.shift() as AsyncQueueType;
