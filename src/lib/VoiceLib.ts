@@ -84,6 +84,6 @@ const FfmpegAudio = (stream: Readable) => ffmpeg()
 	.audioCodec("libopus")
 	.withAudioBitrate(96)
 	.withAudioChannels(2)
-	.withAudioFrequency(44100)
-	.withAudioQuality(2)
-	.outputFormat("ogg");
+	//	.withAudioFrequency(44100)
+	// .withAudioQuality(2)
+	.outputFormat("opus");
