@@ -13,7 +13,7 @@ export const PlayOptions = (size = 0, byte = 4096): StreamOptions => {
 		seek: 0,
 		volume: 1,
 		passes: passes ? passes : 1,
-		bitrate: 20000
+		bitrate: 44100
 	};
 } ;
 
@@ -81,9 +81,9 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 const FfmpegAudio = (stream: Readable) => ffmpeg()
 	.input(stream)
 	.withNoVideo()
-	.audioCodec("libopus")
+	.audioCodec("libvorbis")
 	.withAudioBitrate(96)
 	.withAudioChannels(2)
-	.withAudioFrequency(20000)
+	.withAudioFrequency(44100)
 	.withAudioQuality(2)
 	.outputFormat("ogg");
