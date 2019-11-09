@@ -86,4 +86,4 @@ const FfmpegAudio = (stream: Readable) => ffmpeg()
 	.withAudioChannels(2)
 	.withAudioFrequency(48000)
 	.withAudioQuality(5)
-	.outputFormat("opus");
+	.outputFormat("mka");
