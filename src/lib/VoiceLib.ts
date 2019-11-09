@@ -11,7 +11,7 @@ export const InitialPlayOptions: StreamOptions = {
 	seek: 0,
 	volume: 1,
 	passes: 1,
-	bitrate: 48000
+	bitrate: 44100
 };
 
 /** 경로에 있는 파일을 재생합니다. */
@@ -20,9 +20,6 @@ export const PlayFile = (obj: DiscordVoiceInfomation, path: string, option: Stre
 /** stream정보를 재생합니다. */
 export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option: StreamOptions = InitialPlayOptions) => {
 	const { connection, arrayQueueStack, playingAudio } = obj;
-	stream.on("end", () => {
-		console.log("end stream", stream.destroyed);
-	});
 	connection.playStream(stream, option).on("end", () => {
 		console.log("end playstream");
 		// loop
@@ -31,19 +28,14 @@ export const PlayStream = (obj: DiscordVoiceInfomation, stream: Readable, option
 		if (arrayQueueStack.length) {
 			const Output = arrayQueueStack.shift();
 			if (Output) {
-				// 1 second delay
-				setTimeout(() => {
-					const stream = fs.createReadStream(Output.filePath);
-					const passes = Math.round(getFileSize(Output.filePath) / 4096);
+				const stream = fs.createReadStream(Output.filePath);
+				const passes = Math.round(getFileSize(Output.filePath) / 4096);
 
-					obj.playingAudio = Output
-					PlayStream(obj, stream, {
-						...option,
-						...{
-							passes: passes ? passes : 1
-						}
-					});
-				}, 1000);
+				obj.playingAudio = Output;
+
+				// change passes
+				option.passes = passes;
+				PlayStream(obj, stream, option);
 			}
 		} else {
 			obj.playingAudio = null;
@@ -92,10 +84,10 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 // ffmpeg audio setting function
 const FfmpegAudio = (stream: Readable) => ffmpeg()
 	.input(stream)
-	.audioCodec("libmp3lame")
 	.withNoVideo()
+	.audioCodec("libopus")
 	.withAudioBitrate(96)
 	.withAudioChannels(2)
-	.withAudioFrequency(48000)
+	.withAudioFrequency(44100)
 	.withAudioQuality(5)
-	.outputFormat("mp3");
+	.outputFormat("opus");

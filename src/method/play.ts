@@ -30,7 +30,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 	if (this.validate(id)) {
 		const obj = this.connection(id);
 		let link: string = "";
-		let v: string = "";		
+		let v: string = "";
 
 		// callback
 		const callback = (data: YoutubeDataAPIResponse) => {
@@ -42,8 +42,8 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 				if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
 			});
 
-			const filePath = path.resolve(dirPath, `${v}.mp3`);
-			message.channel.send("검색결과임 " + link);
+			const filePath = path.resolve(dirPath, `${v}.opus`);
+			message.channel.send(link);
 			if (flag) {
 				flag = false;
 				const dispatcher = this.dispatcher(id);
@@ -55,7 +55,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 						PlayStream(obj, stream, {
 							...InitialPlayOptions,
 							...{
-								passes: Math.round(size / 2048)
+								passes: Math.round(size / 4096)
 							}
 						});
 					} else {
