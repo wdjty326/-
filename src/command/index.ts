@@ -16,6 +16,8 @@ import clean from "./clean";
 import loop from "./loop";
 import remove from "./remove";
 import DiscordApp from "../app";
+
+import setLocale from "./setLocale";
 import { LocaleContentType } from "define/CommonType";
 
 export default class command {
@@ -33,6 +35,8 @@ export default class command {
 	private skip: Function;
 	private loop: Function;
 	private remove: Function;
+
+	private setLocale: Function;
 	
 	private locale: LocaleContentType = {
 		commandBox: {}
@@ -75,13 +79,17 @@ export default class command {
 			[this.locale.commandBox["loop_type2"]]: this.loop,
 
 			[this.locale.commandBox["remove_type1"]]: this.remove,
-			[this.locale.commandBox["remove_type2"]]: this.remove
+			[this.locale.commandBox["remove_type2"]]: this.remove,
+
+			setLocale: this.setLocale
 		};
 	}
 
 	constructor(instance: DiscordApp) {
 		this.setLocaleContent = this.setLocaleContent.bind(this);
 		this.call = this.call.bind(this);
+
+		this.setLocale = setLocale.bind(instance);
 
 		this.ping = ping.bind(instance);
 		this.help = help.bind(instance);
