@@ -29,7 +29,9 @@ export default {
     "search": "검색결과",
 
     "playingAudio": "재생중인 오디오",
-    "waitingList": "대기중인 목록",
+		"waitingList": "대기중인 목록",
+		"skipList": "스킵된 목록",
+		"removeList": "제거된 목록",
 
     "guide": guide,
 
@@ -38,6 +40,7 @@ export default {
 
     "connectionMsg": "하-위",
     "disconnectMsg": "바-위",
+		"cleanMsg": "클-린",
 
     "helpguide": "=ㄷㅇ(or 도움) 으로 명령어 체크 바람",
 

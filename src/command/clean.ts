@@ -15,5 +15,7 @@ export default function(this: discordapp, message: discordjs.Message): void {
 		// loop forced initialization
 		if (obj.isQueueRepeat) obj.isQueueRepeat = false;
 		if (dispatcher) dispatcher.end();
+
+		message.channel.send(this.template["cleanMsg"]);
 	}
 };

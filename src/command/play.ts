@@ -43,7 +43,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 			});
 
 			const filePath = path.resolve(dirPath, `${v}.opus`);
-			message.channel.send(this.template["search"] + ":" + link);
+			// message.channel.send(this.template["search"] + ":" + link);
 			if (flag) {
 				flag = false;
 				const dispatcher = this.dispatcher(id);
@@ -92,7 +92,9 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 				key: this.apikey,
 				part: "id, snippet",
 				id: parameters["v"]
-			}).then(callback);
+			}).then((data) => {
+				callback(data);
+			});
 		} else {
 			// youtube title search
 			YoutubeDataAPI.Search({
@@ -103,6 +105,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 			}).then((data) => {
 				v = data.items[0].id.videoId;
 				link = `https://youtube.com/watch?v=${v}`;
+				message.channel.send(this.template["search"] + ":" + link);
 				callback(data);
 			});
 		}

@@ -18,7 +18,12 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 				return;
 			}
 
-			obj.arrayQueueStack.splice(start - 1, count);
+			const removeList = obj.arrayQueueStack.splice(start - 1, count);
+			message.channel.send(
+				this.template["removeList"]
+				+ "\n"
+				+ removeList.map((audio) => audio.title).join("\n")
+			);
 		}
 	}
 };
