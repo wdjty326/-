@@ -4,8 +4,9 @@
   "scripts": {
     "build": "tsc && babel dist --out-dir dist",
     "serve": "forever start -c 'node --optimize_for_size --max_old_space_size=460 --gc_interval=100' -o discordbot-me.out -e discordbot-me.err dist/index.js",
-		"stop": "forever stop dist/index.js",
-		"clean": "rimraf dist",
+    "stop": "forever stop dist/index.js",
+    "mongo": "mongo",
+    "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "main": "dist/index.js",
@@ -19,11 +20,13 @@
   "dependencies": {
     "@types/ffmpeg": "^1.0.0",
     "@types/fluent-ffmpeg": "^2.1.11",
+    "@types/mongoose": "^5.5.30",
     "@types/node": "^12.7.8",
     "axios": "^0.19.0",
     "discord.js": "^11.5.1",
     "fluent-ffmpeg": "^2.1.2",
     "forever": "^1.0.0",
+    "mongoose": "^5.7.9",
     "node-opus": "^0.3.2",
     "rimraf": "^3.0.0",
     "typescript": "^3.6.3",
