@@ -7,13 +7,17 @@ import fs from "fs";
 import { AudioInfo } from "../define/CommonType";
 import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
 
-export const PlayOptions = (size = 0, byte = 16000): StreamOptions => {
+import AudioOption from "../option";
+
+const Instance = AudioOption.getInstance();
+
+export const PlayOptions = (size = 0, byte = Instance.getPassesByte()): StreamOptions => {
 	const passes = Math.round(size / byte);
 	return {
 		seek: 0,
 		volume: 0.5,
 		passes: passes ? passes : 1,
-		bitrate: 24000
+		bitrate: Instance.getAudioFrequency()
 	};
 } ;
 
@@ -61,7 +65,12 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 	}	else {
 		try {
 			const stream = ytdl(link);
-			// use ffmpeg convert mp3
+			// use ffmpeg
+			console.log("audio option:",
+				Instance.getAudioBitrate(),
+				",",
+				Instance.getAudioFrequency()
+			);
 			FfmpegAudio(stream)
 			.on("error", (err) => {
 				if (typeof err === "string")	reject(new Error(err));
@@ -81,10 +90,10 @@ export const FileWriteStream = (link: string, filePath: string) => new Promise<R
 // ffmpeg audio setting function
 const FfmpegAudio = (stream: Readable) => ffmpeg()
 .input(stream)
-.audioCodec("libopus")
+.audioCodec(Instance.getAudioCodec())
 .withNoVideo()
-.withAudioBitrate(64)
+.withAudioBitrate(Instance.getAudioBitrate())
 .withAudioChannels(2)
-.withAudioFrequency(24000)
+.withAudioFrequency(Instance.getAudioFrequency())
 //.withAudioQuality(5)
 .outputFormat("opus");

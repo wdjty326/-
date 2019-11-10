@@ -15,6 +15,8 @@ import skip from "./skip";
 import clean from "./clean";
 import loop from "./loop";
 import remove from "./remove";
+import debug from "./debug";
+
 import DiscordApp from "../app";
 
 import template from "../locale/template";
@@ -35,9 +37,12 @@ export default class command {
 	private loop: Function;
 	private remove: Function;
 
+	private debug: Function;
+
 	constructor(instance: DiscordApp) {
 		this.call = this.call.bind(this);
 
+		this.debug = debug.bind(instance);
 		this.ping = ping.bind(instance);
 		this.help = help.bind(instance);
 		this.connect = connect.bind(instance);
@@ -52,6 +57,8 @@ export default class command {
 		this.remove = remove.bind(instance);
 
 		this.commandBox = {
+			debug: this.debug,
+
 			[template.commandBox["ping_type1"]]: this.ping,
 			[template.commandBox["ping_type2"]]: this.ping,
 
