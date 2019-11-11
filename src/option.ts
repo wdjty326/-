@@ -1,10 +1,17 @@
+import path from "path";
+import fs from "fs";
+
 export default class AudioOption {
 	private constructor() {
+		if (!fs.existsSync(this.MusicDir))	fs.mkdirSync(this.MusicDir);
+
 		this.AudioBitrate = 96;
 		this.AudioFrequency = 48000;
 		this.AudioCodec = "libopus";
 	}
 	private static instance: AudioOption = new AudioOption();
+
+	private MusicDir: string = path.resolve(__dirname, "music");
 
 	private PassesByte: number = 16000;
 
@@ -30,6 +37,10 @@ export default class AudioOption {
 
 	public getAudioFrequency() {
 		return this.AudioFrequency;
+	}
+
+	public getMusicDir() {
+		return this.MusicDir;
 	}
 
 	public setPassesByte(PassesByte: number) {

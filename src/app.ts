@@ -19,13 +19,13 @@ export default class DiscordApp {
 	/** command object */
 	protected command: command;
 
-	protected test?: string;
+	protected debugkey?: string;
 
 	/** command line startwith */
 	private readonly commandLine = "=";
 	protected template = template;
 
-	constructor(token: string, apikey: string, test?: string) {	
+	constructor(token: string, apikey: string, debugkey?: string) {	
 		this.ready = this.ready.bind(this);
 		this.message = this.message.bind(this);
 
@@ -35,7 +35,7 @@ export default class DiscordApp {
 		this.delete = this.delete.bind(this);
 
 		this.apikey = apikey;
-		this.test = test;
+		this.debugkey = debugkey;
 		this.command = new command(this);
 		
 		this.client.on("ready", this.ready);

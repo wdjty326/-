@@ -15,6 +15,7 @@ import { getURLParameter } from "../lib/StringLib";
 
 import { AsyncQueueType } from "../define/CommonType";
 import YoutubeDataAPIResponse from "../define/YoutubeDataInterface";
+import AudioOption from "../option";
 
 const AsyncQueueStack: Array<AsyncQueueType> = [];
 let flag = true;
@@ -35,15 +36,10 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 		// callback
 		const callback = (data: YoutubeDataAPIResponse) => {
 			const title = data.items[0].snippet.title;
-			const dirPaths = ["..", "music", id];
-			let dirPath = path.resolve(__dirname);		
-			dirPaths.forEach((dir) => {
-				dirPath = path.resolve(dirPath, dir);
-				if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
-			});
+			const dirPath = path.resolve(AudioOption.getInstance().getMusicDir(), id);		
+			if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
 
 			const filePath = path.resolve(dirPath, `${v}.opus`);
-			// message.channel.send(this.template["search"] + ":" + link);
 			if (flag) {
 				flag = false;
 				const dispatcher = this.dispatcher(id);

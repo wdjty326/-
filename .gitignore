@@ -1,25 +1,13 @@
 
-# 노드 모듈
+# node module
 node_modules
 
-# 컴파일 모듈
+# directory
+bin
 dist
+log
 
-# 클라이언트 토큰 파일입니다.
-# 본인의 client token을 넣어주세요
-client_token
-client_url
-
-# 구글 api 연동 키셋이다
-api_key
-test
-ssh
-
-# music file
-src/admin/**/*.m4a
-src/admin/**/*.mp3
-src/admin/**/*.mkv
-
-# log file
-discordbot-me.out
-discordbot-me.err
+# key file
+src/client_token
+src/api_key
+src/debug_key
