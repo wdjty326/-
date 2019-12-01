@@ -18,5 +18,7 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 					clean(message, reArgs);
 					break;
 			}
+		} else {
+			message.channel.send(this.template["debugguide"]);
 		}
 };

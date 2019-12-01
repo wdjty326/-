@@ -69,7 +69,8 @@ class database {
 				$user_id: user_id,
 			}, (err, rows) => {
 				if (err) reject(err);
-				resolve(rows);
+				const preset_names = rows.map((row) => row.preset_name);
+				resolve(preset_names);
 			});
 		});
 	}

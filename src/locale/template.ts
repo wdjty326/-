@@ -32,6 +32,18 @@ const guide = `
 	리스트 : 현재 사용자가 등록한 프리셋을 보여줍니다.
 `;
 
+const debugguide = `
+# 디버깅용 가이드입니다.
+## 해당 명령어는 개발자만 가능합니다.
+
+=디버그 노래제거
+- 현재 서버에 저장된 노래를 모두 제거합니다.
+=디버그 설정 [bitrate|frequency] [number]
+- frequency 는 24000 | 48000
+- bitrate 는 32|48|64|96
+해당 설정은 임시로 설정되는 기능입니다. 
+`
+
 export default {
     "search": "검색결과",
 
@@ -40,7 +52,8 @@ export default {
 		"skipList": "스킵된 목록",
 		"removeList": "제거된 목록",
 
-    "guide": guide,
+		"guide": guide,
+		"debugguide": debugguide,
 
     "startQueue": "반복재생시작",
     "stopQueue": "반복재생종료",
