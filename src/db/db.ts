@@ -62,6 +62,18 @@ class database {
 		});
 	}
 
+	public selectPresetList(server_id: string, user_id: string) {
+		return new Promise<string[]>((resolve, reject) => {
+			this.connect.all("select preset_name from tbl_music_preset where server_id = $server_id and user_id = $user_id", {
+				$server_id: server_id,
+				$user_id: user_id,
+			}, (err, rows) => {
+				if (err) reject(err);
+				resolve(rows);
+			});
+		});
+	}
+
 	public static getDatabase() {
 		return this.database;
 	}

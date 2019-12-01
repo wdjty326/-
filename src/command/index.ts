@@ -60,45 +60,33 @@ export default class command {
 		this.remove = remove.bind(instance);
 
 		this.commandBox = {
-			debug: this.debug,
-			[template.commandBox["preset_type1"]]: this.preset,
-			[template.commandBox["preset_type2"]]: this.preset,
+			[template.commandBox["debug_type"]]: this.debug,
 
-			[template.commandBox["ping_type1"]]: this.ping,
-			[template.commandBox["ping_type2"]]: this.ping,
+			[template.commandBox["preset_type"]]: this.preset,
 
-			[template.commandBox["help_type1"]]: this.help,
-			[template.commandBox["help_type2"]]: this.help,
+			[template.commandBox["ping_type"]]: this.ping,
 
-			[template.commandBox["connect_type1"]]: this.connect,
-			[template.commandBox["connect_type2"]]: this.connect,
+			[template.commandBox["help_type"]]: this.help,
 
-			[template.commandBox["disconnect_type1"]]: this.disconnect,
-			[template.commandBox["disconnect_type2"]]: this.disconnect,
+			[template.commandBox["connect_type"]]: this.connect,
 
-			[template.commandBox["play_type1"]]: this.play,
-			[template.commandBox["play_type2"]]: this.play,
+			[template.commandBox["disconnect_type"]]: this.disconnect,
 
-			[template.commandBox["playlist_type1"]]: this.playlist,
-			[template.commandBox["playlist_type2"]]: this.playlist,
+			[template.commandBox["play_type"]]: this.play,
 
-			[template.commandBox["clean_type1"]]: this.clean,
-			[template.commandBox["clean_type2"]]: this.clean,
+			[template.commandBox["playlist_type"]]: this.playlist,
 
-			[template.commandBox["pause_type1"]]: this.pause,
-			[template.commandBox["pause_type2"]]: this.pause,
+			[template.commandBox["clean_type"]]: this.clean,
 
-			[template.commandBox["resume_type1"]]: this.resume,
-			[template.commandBox["resume_type2"]]: this.resume,
+			[template.commandBox["pause_type"]]: this.pause,
 
-			[template.commandBox["skip_type1"]]: this.skip,
-			[template.commandBox["skip_type2"]]: this.skip,
+			[template.commandBox["resume_type"]]: this.resume,
 
-			[template.commandBox["loop_type1"]]: this.loop,
-			[template.commandBox["loop_type2"]]: this.loop,
+			[template.commandBox["skip_type"]]: this.skip,
 
-			[template.commandBox["remove_type1"]]: this.remove,
-			[template.commandBox["remove_type2"]]: this.remove
+			[template.commandBox["loop_type"]]: this.loop,
+
+			[template.commandBox["remove_type"]]: this.remove
 		};
 	}
 

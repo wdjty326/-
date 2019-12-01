@@ -14,7 +14,7 @@ export default function(message: discordjs.Message, args: string[]): void {
 		if (fs.existsSync(dirPath)) {
 			console.log("debug clean path:", dirPath);
 			rimraf.sync(dirPath);
-			message.channel.send("remove music dir");
+			message.channel.send("ok");
 		}
 	}
 }

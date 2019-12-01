@@ -11,14 +11,12 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 			const reArgs = args.slice(1);
 
 			switch(command) {
-				case "set":
+				case this.template.debugBox["set_type"]:
 					set(message, reArgs);
 					break;
-				case "clean":
+				case this.template.debugBox["clean_type"]:
 					clean(message, reArgs);
 					break;
 			}
 		}
-	else
-		message.channel.send("you not tester");
 };

@@ -63,6 +63,11 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 					message.channel.send(err);
 				});
 				break;
+			case this.template["presetlist"]:
+				DB.getDatabase().selectPresetList(server_id, user_id).then((rows: string[]) => {
+					message.channel.send(this.template["listPreset"] + "\n" + rows.join("\n"));
+				});
+				break;
 		}
 	}
 };
