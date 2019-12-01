@@ -29,4 +29,6 @@ npm run copy
 - ffmpeg
 
 ### discordapp permission
-**36768000**
+```
+36768000
+```

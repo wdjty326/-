@@ -16,6 +16,7 @@ import clean from "./clean";
 import loop from "./loop";
 import remove from "./remove";
 import debug from "./debug";
+import preset from "./preset";
 
 import DiscordApp from "../app";
 
@@ -36,12 +37,14 @@ export default class command {
 	private skip: Function;
 	private loop: Function;
 	private remove: Function;
+	private preset: Function;
 
 	private debug: Function;
 
 	constructor(instance: DiscordApp) {
 		this.call = this.call.bind(this);
 
+		this.preset = preset.bind(instance);
 		this.debug = debug.bind(instance);
 		this.ping = ping.bind(instance);
 		this.help = help.bind(instance);
@@ -58,6 +61,8 @@ export default class command {
 
 		this.commandBox = {
 			debug: this.debug,
+			[template.commandBox["preset_type1"]]: this.preset,
+			[template.commandBox["preset_type2"]]: this.preset,
 
 			[template.commandBox["ping_type1"]]: this.ping,
 			[template.commandBox["ping_type2"]]: this.ping,

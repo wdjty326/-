@@ -23,6 +23,9 @@ const guide = `
 - 현재 저장된 노래스택을 기준으로 루프를 돌립니다.
 =ㅈㄱ(or 제거) [삭제할 목록 숫자] [추가 삭제 개수]
 - 목록에 저장된 내용을 제거합니다.
+
+=ㅍㄹㅅ(or 프리셋) [저장|로드|제거] [프리셋명]
+- 프리셋을 관리합니다.
 `;
 
 export default {
@@ -48,7 +51,18 @@ export default {
     "errorNotFountVoiceChannel": "음성방에 들어가고 부르셈.",
     "errorAwaitVoiceChannel": "바빠 나중에 불러.",
 
+		"save": "저장",
+		"load": "로드",
+		"remove": "제거",
+
+		"savePreset": "프리셋저장",
+		"loadPreset": "프리셋로드",
+		"removePreset": "프리셋제거",
+
     commandBox: {
+				"preset_type1": "ㅍㄹㅅ",
+				"preset_type2": "프리셋",
+
         "ping_type1": "ㅍ",
         "ping_type2": "핑",
         

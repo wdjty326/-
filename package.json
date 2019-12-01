@@ -23,6 +23,7 @@
     "@types/mongoose": "^5.5.30",
     "@types/node": "^12.7.8",
     "@types/rimraf": "^2.0.3",
+    "@types/sqlite3": "^3.1.5",
     "axios": "^0.19.0",
     "discord.js": "^11.5.1",
     "fluent-ffmpeg": "^2.1.2",
@@ -30,6 +31,7 @@
     "mongoose": "^5.7.9",
     "node-opus": "^0.3.2",
     "rimraf": "^3.0.0",
+    "sqlite3": "^4.1.0",
     "typescript": "^3.6.3",
     "ytdl-core": "^0.29.7"
   },
