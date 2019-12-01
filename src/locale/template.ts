@@ -62,7 +62,7 @@ export default {
     "disconnectMsg": "바-위",
 		"cleanMsg": "클-린",
 
-    "helpguide": "=ㄷㅇ(or 도움) 으로 명령어 체크 바람",
+    "helpguide": "=도움 으로 명령어 체크 바람",
 
     "errorInputNaturalNumber": "0 이상의 숫자로 부탁함.",
     "errorNotFountVoiceChannel": "음성방에 들어가고 부르셈.",
