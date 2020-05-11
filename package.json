@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "build": "tsc && babel dist --out-dir dist",
-    "serve": "forever start -c 'node --optimize_for_size --max_old_space_size=460 --gc_interval=100' -o log/outer.log -e log/error.log dist/index.js",
+    "serve": "forever start -c 'node --optimize_for_size --max_old_space_size=460 ' -o log/outer.log -e log/error.log dist/index.js",
     "stop": "forever stop dist/index.js",
-    "mongo": "mongo",
     "clean": "rimraf dist",
     "copy": "node copy.js"
   },
@@ -13,26 +12,25 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@babel/cli": "^7.6.0",
-    "@babel/core": "^7.6.0",
-    "@babel/preset-env": "^7.6.0"
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@types/ffmpeg": "^1.0.0",
+    "@types/fluent-ffmpeg": "^2.1.14",
+    "@types/mongoose": "^5.7.16",
+    "@types/node": "^12.12.38",
+    "@types/rimraf": "^2.0.4",
+    "@types/sqlite3": "^3.1.5",
+    "forever": "^1.0.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.8.3"
   },
   "dependencies": {
-    "@types/ffmpeg": "^1.0.0",
-    "@types/fluent-ffmpeg": "^2.1.11",
-    "@types/mongoose": "^5.5.30",
-    "@types/node": "^12.7.8",
-    "@types/rimraf": "^2.0.3",
-    "@types/sqlite3": "^3.1.5",
-    "axios": "^0.19.0",
-    "discord.js": "^11.5.1",
+    "axios": "^0.19.2",
+    "discord.js": "^11.6.4",
     "fluent-ffmpeg": "^2.1.2",
-    "forever": "^1.0.0",
-    "mongoose": "^5.7.9",
     "node-opus": "^0.3.2",
-    "rimraf": "^3.0.0",
-    "sqlite3": "^4.1.0",
-    "typescript": "^3.6.3",
+    "sqlite3": "^4.2.0",
     "ytdl-core": "^0.29.7"
   },
   "description": ""
