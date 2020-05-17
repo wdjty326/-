@@ -4,17 +4,17 @@ import path from "path";
 import fs from "fs";
 
 import connect from "./connect";
-import YoutubeDataAPI from "../lib/YoutubeDataAPI";
+import YoutubeAPI from "../lib/YoutubeAPI";
 import {
 	PlayStream,
 	FileWriteStream,
 	getFileSize,
 	PlayOptions
-} from "../lib/VoiceLib";
-import { getURLParameter } from "../lib/StringLib";
+} from "../lib/Voices";
+import { getURLParameter } from "../lib/Functions";
 
-import { AsyncQueueType } from "../define/CommonType";
-import YoutubeDataAPIResponse from "../define/YoutubeDataInterface";
+import { AsyncQueueType } from "../define/Common";
+import YoutubeAPIResponse from "../define/YoutubeAPI";
 import AudioOption from "../option";
 
 const AsyncQueueStack: Array<AsyncQueueType> = [];
@@ -34,7 +34,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 		let v: string = "";
 
 		// callback
-		const callback = (data: YoutubeDataAPIResponse) => {
+		const callback = (data: YoutubeAPIResponse) => {
 			const title = data.items[0].snippet.title;
 			const dirPath = path.resolve(AudioOption.getInstance().getMusicDir(), id);		
 			if (!fs.existsSync(dirPath))	fs.mkdirSync(dirPath);
@@ -84,7 +84,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 			const parameters = getURLParameter(link);
 			v = parameters["v"];
 
-			YoutubeDataAPI.Video({
+			YoutubeAPI.video({
 				key: this.apikey,
 				part: "id, snippet",
 				id: parameters["v"]
@@ -93,7 +93,7 @@ export default function play(this: discordapp, message: discordjs.Message, args:
 			});
 		} else {
 			// youtube title search
-			YoutubeDataAPI.Search({
+			YoutubeAPI.search({
 				key: this.apikey,
 				part: "id, snippet",
 				q: encodeURI(args.join(" ")),

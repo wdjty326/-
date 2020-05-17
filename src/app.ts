@@ -1,9 +1,9 @@
 import discordjs, { StreamDispatcher } from "discord.js";
 
 import command from "./command";
-import template from "./locale/template";
+import template from "./locale/Template";
 
-import DiscordVoiceInfomation from "define/DiscordVoiceInterface";
+import DiscordVoiceInfomation from "define/DiscordVoice";
 
 /** discord main class. */
 export default class DiscordApp {

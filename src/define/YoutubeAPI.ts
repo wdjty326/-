@@ -1,4 +1,4 @@
-export default interface YoutubeDataAPIResponse {
+export default interface YoutubeAPIResponse {
 	kind: string;
 	etag: string;
 	pageInfo: {

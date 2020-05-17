@@ -1,4 +1,13 @@
-/** URL 에 있는 파라미터를 가져옵니다. */
+/**
+ * 입력값이 자연수인지 여부를 확인합니다.
+ * @param n 
+ */
+export const isNaN = (n: number): boolean => !globalThis.isNaN(n) && n > 0;
+
+/**
+ * URL에 있는 파라미터를 가져옵니다.
+ * @param url 
+ */
 export const getURLParameter = (url: string) => {
 	const parameters: {
 		[key: string]: string
@@ -17,6 +26,10 @@ export const getURLParameter = (url: string) => {
 	return parameters;
 }
 
+/**
+ * object 객체를 QueryString 으로 변환합니다.
+ * @param obj 
+ */
 export const SerializeGet = (obj: { [key: string]: string | number | boolean | undefined | null }): string  => Object.keys(obj)
 	.filter((key) => obj[key] !== undefined)
 	.map((key) => {

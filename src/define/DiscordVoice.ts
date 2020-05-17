@@ -1,6 +1,6 @@
 import discordjs from "discord.js";
 
-import { AudioInfo } from "./CommonType";
+import { AudioInfo } from "./Common";
 
 /** discord voice connection infomation interface */
 export default interface DiscordVoiceInfomation {

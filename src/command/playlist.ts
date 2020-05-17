@@ -15,7 +15,7 @@ export default function(this: discordapp, message: discordjs.Message): void {
 			+ currentTitle
 			+ "\n"
 			+ "*" + this.template["waitingList"] + "\n" 
-			+ obj.arrayQueueStack.map((Output, Index) => `${Index + 1}. ${Output.title}`).join("\n")
+			+ obj.arrayQueueStack.map((output, index) => `${index + 1}. ${output.title}`).join("\n")
 		);
 	}
 };

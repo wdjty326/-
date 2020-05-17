@@ -1,14 +1,13 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import DB from "../db/db";
-import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
+import DB from "../db/Database";
+import DiscordVoiceInfomation from "../define/DiscordVoice";
 
-import { AudioInfo } from "../define/CommonType";
-import { PlayFile, getFileSize, PlayOptions } from "../lib/VoiceLib";
+import { AudioInfo } from "../define/Common";
+import { PlayFile, getFileSize, PlayOptions } from "../lib/Voices";
 
 export default function(this: discordapp, message: discordjs.Message, args: string[]): void {
-	// call message server id
 	const server_id = message.guild.id;
 
 	if (this.validate(server_id)) {
@@ -33,7 +32,6 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 				break;
 			case this.template["load"]:
 				DB.getDatabase().selectPreset(server_id, user_id, preset_name).then((data) => {
-					// stack clear and dispatcher distory
 					obj.arrayQueueStack.length = 0;
 					obj.arrayQueueStack = data;
 

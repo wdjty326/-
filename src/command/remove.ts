@@ -1,10 +1,15 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import { IsNaturalNumber } from "../lib/IntegerLib";
+import { isNaN } from "../lib/Functions";
 
+/**
+ * queue 에 쌓인 목록을 제거합니다.
+ * @param this 
+ * @param message 
+ * @param args 
+ */
 export default function(this: discordapp, message: discordjs.Message, args: string[]): void {
-	// call message server id
 	const id = message.guild.id;
 
 	if (this.validate(id)) {
@@ -13,7 +18,7 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 			const start = parseInt(args[0], 10);
 			const count = (args.length === 2) ? parseInt(args[1], 10) : 1;
 			
-			if (!IsNaturalNumber(start) || !IsNaturalNumber(count)) {
+			if (!isNaN(start) || !isNaN(count)) {
 				message.channel.send(this.template["errorInputNaturalNumber"]);
 				return;
 			}

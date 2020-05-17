@@ -1,7 +1,7 @@
 import sqlite3 from "sqlite3";
 import path from "path";
 import fs from "fs";
-import { AudioInfo } from "../define/CommonType";
+import { AudioInfo } from "../define/Common";
 
 class database {
 	private static database = new database();

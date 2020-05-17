@@ -1,16 +1,22 @@
 import axios from "axios";
 
-import { SerializeGet } from "../lib/StringLib";
+import { SerializeGet } from "../lib/Functions";
 
-import { PayloadData } from "../define/CommonType";
-import YoutubeDataAPIResponse from "../define/YoutubeDataInterface";
+import { PayloadData } from "../define/Common";
+import YoutubeAPIResponse from "../define/YoutubeAPI";
 
-const YoutubeDataAPI = {
-	Video: (Payload: PayloadData) => new Promise<YoutubeDataAPIResponse>((resolve, reject) => {
+/**
+ * 사용되는 유튜브 API 정보입니다.
+ */
+const YoutubeAPI = {
+	/**
+	 * videos api 를 호출합니다.
+	 */
+	video: (Payload: PayloadData) => new Promise<YoutubeAPIResponse>((resolve, reject) => {
 		axios.get(`https://www.googleapis.com/youtube/v3/videos?${SerializeGet(Payload)}`).then((response) => {
 			const { status, data } = response;
 			if (status === 200)
-				if (data.items) resolve(data as YoutubeDataAPIResponse);
+				if (data.items) resolve(data as YoutubeAPIResponse);
 				else reject(new Error("not found"));
 			else reject(new Error(status.toString()));
 		}).catch((err) => {
@@ -20,11 +26,14 @@ const YoutubeDataAPI = {
 				reject(err);
 		});
 	}),
-	Search: (Payload: PayloadData) => new Promise<YoutubeDataAPIResponse>((resolve, reject) => {
+	/**
+	 * search api를 호출합니다.
+	 */
+	search: (Payload: PayloadData) => new Promise<YoutubeAPIResponse>((resolve, reject) => {
 		axios.get(`https://www.googleapis.com/youtube/v3/search?${SerializeGet(Payload)}`).then((response) => {
 			const { status, data } = response;
 			if (status === 200)
-				if (data.items) resolve(data as YoutubeDataAPIResponse);
+				if (data.items) resolve(data as YoutubeAPIResponse);
 				else reject(new Error("not found"));
 			else reject(new Error(status.toString()));
 		}).catch((err) => {
@@ -36,4 +45,4 @@ const YoutubeDataAPI = {
 	})
 };
 
-export default YoutubeDataAPI;
+export default YoutubeAPI;

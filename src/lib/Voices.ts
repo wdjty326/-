@@ -4,8 +4,8 @@ import ffmpeg from "fluent-ffmpeg";
 import ytdl from "ytdl-core";
 import fs from "fs";
 
-import { AudioInfo } from "../define/CommonType";
-import DiscordVoiceInfomation from "../define/DiscordVoiceInterface";
+import { AudioInfo } from "../define/Common";
+import DiscordVoiceInfomation from "../define/DiscordVoice";
 
 import AudioOption from "../option";
 

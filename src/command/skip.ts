@@ -1,9 +1,9 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import { IsNaturalNumber } from "../lib/IntegerLib";
+import { isNaN } from "../lib/Functions";
 
-import { AudioInfo } from "../define/CommonType";
+import { AudioInfo } from "../define/Common";
 
 export default function(this: discordapp, message: discordjs.Message, args: string[]) {
 	const id = message.guild.id;
@@ -12,7 +12,7 @@ export default function(this: discordapp, message: discordjs.Message, args: stri
 		const mapper = this.connection(id);
 		if (args.length) {
 			const count = parseInt(args[0], 10);
-			if (IsNaturalNumber(count)) {
+			if (isNaN(count)) {
 				const x = parseInt(args[0], 10) - 1 < mapper.arrayQueueStack.length 
 					? parseInt(args[0], 10) - 1 : mapper.arrayQueueStack.length;
 				for(let i=0; i < x; i++) {
