@@ -1,7 +1,7 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import { isNaN } from "../lib/Functions";
+import { isNaN } from "../Libs/Functions";
 
 /**
  * queue 에 쌓인 목록을 제거합니다.

@@ -15,8 +15,9 @@ import skip from "./skip";
 import clean from "./clean";
 import loop from "./loop";
 import remove from "./remove";
-import debug from "./debug";
 import preset from "./preset";
+
+import debuging from "./Debuging";
 
 import DiscordApp from "../app";
 
@@ -45,7 +46,7 @@ export default class command {
 		this.call = this.call.bind(this);
 
 		this.preset = preset.bind(instance);
-		this.debug = debug.bind(instance);
+		this.debug = debuging.bind(instance);
 		this.ping = ping.bind(instance);
 		this.help = help.bind(instance);
 		this.connect = connect.bind(instance);

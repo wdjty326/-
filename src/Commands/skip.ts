@@ -1,9 +1,9 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import { isNaN } from "../lib/Functions";
+import { isNaN } from "../Libs/Functions";
 
-import { AudioInfo } from "../define/Common";
+import { AudioInfo } from "../Defines/Common";
 
 export default function(this: discordapp, message: discordjs.Message, args: string[]) {
 	const id = message.guild.id;

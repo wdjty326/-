@@ -1,11 +1,11 @@
 import discordjs from "discord.js";
 import discordapp from "../app";
 
-import DB from "../db/Database";
-import DiscordVoiceInfomation from "../define/DiscordVoice";
+import DB from "../DB/Database";
+import DiscordVoiceInfomation from "../Defines/DiscordVoice";
 
-import { AudioInfo } from "../define/Common";
-import { PlayFile, getFileSize, PlayOptions } from "../lib/Voices";
+import { AudioInfo } from "../Defines/Common";
+import { PlayFile, getFileSize, PlayOptions } from "../Libs/Voices";
 
 export default function(this: discordapp, message: discordjs.Message, args: string[]): void {
 	const server_id = message.guild.id;

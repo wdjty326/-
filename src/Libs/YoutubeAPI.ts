@@ -1,9 +1,9 @@
 import axios from "axios";
 
-import { SerializeGet } from "../lib/Functions";
+import { SerializeGet } from "../Libs/Functions";
 
-import { PayloadData } from "../define/Common";
-import YoutubeAPIResponse from "../define/YoutubeAPI";
+import { PayloadData } from "../Defines/Common";
+import YoutubeAPIResponse from "../Defines/YoutubeAPI";
 
 /**
  * 사용되는 유튜브 API 정보입니다.

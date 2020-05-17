@@ -4,17 +4,17 @@ import path from "path";
 import fs from "fs";
 
 import connect from "./connect";
-import YoutubeAPI from "../lib/YoutubeAPI";
+import YoutubeAPI from "../Libs/YoutubeAPI";
 import {
 	PlayStream,
 	FileWriteStream,
 	getFileSize,
 	PlayOptions
-} from "../lib/Voices";
-import { getURLParameter } from "../lib/Functions";
+} from "../Libs/Voices";
+import { getURLParameter } from "../Libs/Functions";
 
-import { AsyncQueueType } from "../define/Common";
-import YoutubeAPIResponse from "../define/YoutubeAPI";
+import { AsyncQueueType } from "../Defines/Common";
+import YoutubeAPIResponse from "../Defines/YoutubeAPI";
 import AudioOption from "../option";
 
 const AsyncQueueStack: Array<AsyncQueueType> = [];
